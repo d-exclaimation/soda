@@ -17,12 +17,11 @@ publishMavenStyle := true
 
 crossPaths := false
 
-publishTo := Some(
-  if (isSnapshot.value)
-    Opts.resolver.sonatypeSnapshots
-  else
-    Opts.resolver.sonatypeStaging
-)
+publishTo := {
+  val nexus = "https://s01.oss.sonatype.org"
+  if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
+  else Some("releases" at nexus + "service/local/staging/deploy/maven2")
+}
 
 libraryDependencies ++= {
   val sangriaVer = "2.1.3"
