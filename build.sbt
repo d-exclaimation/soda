@@ -18,7 +18,7 @@ publishMavenStyle := true
 crossPaths := false
 
 publishTo := {
-  val nexus = "https://s01.oss.sonatype.org"
+  val nexus = "https://s01.oss.sonatype.org/"
   if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
   else Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
