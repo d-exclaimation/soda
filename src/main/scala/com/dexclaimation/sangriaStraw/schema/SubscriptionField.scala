@@ -10,14 +10,16 @@ package com.dexclaimation.sangriaStraw.schema
 
 import sangria.schema.{Field, ObjectType}
 
-case class SubscriptionField[C, T](fields: Field[C, T]*) extends RootSchemaField[C, T] {
+import scala.reflect.ClassTag
+
+case class SubscriptionField[C, T: ClassTag](fields: Field[C, T]*) extends RootSchemaField[C, T] {
   def fieldList: List[Field[C, T]] = fields.toList
 
   override def extendTo: String = "Subscription"
 }
 
 object SubscriptionField {
-  def makeSubscription[C, T](queryField: SubscriptionField[C, T]*): ObjectType[C, T] =
+  def makeSubscription[C, T: ClassTag](queryField: SubscriptionField[C, T]*): ObjectType[C, T] =
     ObjectType(
       name = "Subscription",
       fields =

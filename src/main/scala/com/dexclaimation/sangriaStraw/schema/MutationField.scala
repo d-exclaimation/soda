@@ -10,12 +10,14 @@ package com.dexclaimation.sangriaStraw.schema
 
 import sangria.schema.{Field, ObjectType}
 
-case class MutationField[C, T](fields: Field[C, T]*) extends RootSchemaField[C, T] {
+import scala.reflect.ClassTag
+
+case class MutationField[C, T: ClassTag](fields: Field[C, T]*) extends RootSchemaField[C, T] {
   override def extendTo: String = "Mutation"
 }
 
 object MutationField {
-  def makeMutation[C, T](mutationField: MutationField[C, T]*): ObjectType[C, T] =
+  def makeMutation[C, T: ClassTag](mutationField: MutationField[C, T]*): ObjectType[C, T] =
     ObjectType(
       name = "Mutation",
       fields =

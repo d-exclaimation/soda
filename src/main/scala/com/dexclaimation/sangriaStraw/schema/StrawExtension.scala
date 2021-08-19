@@ -7,22 +7,24 @@
 
 package com.dexclaimation.sangriaStraw.schema
 
-import sangria.schema.{Field, Schema}
 import com.dexclaimation.sangriaStraw.schema.MutationField.makeMutation
 import com.dexclaimation.sangriaStraw.schema.QueryField.makeQuery
 import com.dexclaimation.sangriaStraw.schema.SubscriptionField.makeSubscription
+import sangria.schema.{Field, Schema}
+
+import scala.reflect.ClassTag
 
 object StrawExtension {
-  def extendQuery[C, T](fields: Field[C, T]*): QueryField[C, T] =
+  def extendQuery[C, T: ClassTag](fields: Field[C, T]*): QueryField[C, T] =
     QueryField(fields: _*)
 
-  def extendMutation[C, T](fields: Field[C, T]*): MutationField[C, T] =
+  def extendMutation[C, T: ClassTag](fields: Field[C, T]*): MutationField[C, T] =
     MutationField(fields: _*)
 
-  def extendSubscription[C, T](fields: Field[C, T]*): SubscriptionField[C, T] =
+  def extendSubscription[C, T: ClassTag](fields: Field[C, T]*): SubscriptionField[C, T] =
     SubscriptionField(fields: _*)
 
-  def makeSchema[C, T](fields: RootSchemaField[C, T]*): Schema[C, T] = {
+  def makeSchema[C, T: ClassTag](fields: RootSchemaField[C, T]*): Schema[C, T] = {
     val QueryType = makeQuery(
       fields.flatMap {
         case QueryField(fields@_*) => Some(QueryField(fields: _*))

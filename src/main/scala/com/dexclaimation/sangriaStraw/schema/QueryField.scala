@@ -10,7 +10,9 @@ package com.dexclaimation.sangriaStraw.schema
 
 import sangria.schema.{Field, ObjectType}
 
-case class QueryField[C, T](fields: Field[C, T]*) extends RootSchemaField[C, T] {
+import scala.reflect.ClassTag
+
+case class QueryField[C, T: ClassTag](fields: Field[C, T]*) extends RootSchemaField[C, T] {
   def fieldList: List[Field[C, T]] = fields.toList
 
   override def extendTo: String = "Query"
@@ -18,7 +20,7 @@ case class QueryField[C, T](fields: Field[C, T]*) extends RootSchemaField[C, T] 
 
 
 object QueryField {
-  def makeQuery[C, T](queryField: QueryField[C, T]*): ObjectType[C, T] =
+  def makeQuery[C, T: ClassTag](queryField: QueryField[C, T]*): ObjectType[C, T] =
     ObjectType(
       name = "Query",
       fields =
