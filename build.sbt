@@ -2,10 +2,16 @@ scalaVersion := "2.13.3"
 
 name := "sangria-straw"
 organization := "io.github.d-exclaimation"
-version := "1.0"
+version := "0.1"
 homepage := Some(url("https://github.com/d-exclaimation/sangria-straw"))
-scmInfo := Some(ScmInfo(url("https://github.com/d-exclaimation/sangria-straw"), "git@github.com:d-exclaimation/sangria-straw.git"))
-developers := List(Developer("d-exclaimation", "d-exclaimation", "thisoneis4business@gmail.com", url("https://github.com/d-exclaimation")))
+scmInfo := Some(
+  ScmInfo(url("https://github.com/d-exclaimation/sangria-straw"), "git@github.com:d-exclaimation/sangria-straw.git")
+)
+developers := List(
+  Developer("d-exclaimation", "d-exclaimation", "thisoneis4business@gmail.com",
+    url("https://github.com/d-exclaimation")
+  )
+)
 licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))
 publishMavenStyle := true
 
