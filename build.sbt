@@ -16,9 +16,9 @@ scalaVersion := "2.13.3"
 name := "sangria-straw"
 organization := "com.dexclaimation"
 version := "1.0"
-
-githubOwner := "d-exclaimation"
-githubRepository := "sangria-straw"
+//
+//githubOwner := "d-exclaimation"
+//githubRepository := "sangria-straw"
 
 // Note, it's not required for you to define these three settings. These are
 // mostly only necessary if you intend to publish your library's binaries on a
