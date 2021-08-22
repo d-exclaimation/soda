@@ -5,11 +5,11 @@
 //  Created by d-exclaimation on 6:54 AM.
 //
 
-package com.dexclaimation.sangriaStraw.schema
+package io.github.dexclaimation.sangriaStraw
 
-import com.dexclaimation.sangriaStraw.schema.MutationField.makeMutation
-import com.dexclaimation.sangriaStraw.schema.QueryField.makeQuery
-import com.dexclaimation.sangriaStraw.schema.SubscriptionField.makeSubscription
+import MutationField.makeMutation
+import QueryField.makeQuery
+import SubscriptionField.makeSubscription
 import sangria.schema.{Field, Schema}
 
 import scala.reflect.ClassTag

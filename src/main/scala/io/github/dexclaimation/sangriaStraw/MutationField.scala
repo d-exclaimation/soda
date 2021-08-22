@@ -6,7 +6,7 @@
 //
 
 
-package com.dexclaimation.sangriaStraw.schema
+package io.github.dexclaimation.sangriaStraw
 
 import sangria.schema.{Field, ObjectType}
 

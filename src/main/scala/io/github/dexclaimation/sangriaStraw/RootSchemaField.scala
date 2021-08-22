@@ -6,7 +6,7 @@
 //
 
 
-package com.dexclaimation.sangriaStraw.schema
+package io.github.dexclaimation.sangriaStraw
 
 trait RootSchemaField[C, T] {
   def extendTo: String
