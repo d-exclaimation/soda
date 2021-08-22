@@ -2,6 +2,7 @@ scalaVersion := "2.13.3"
 
 ThisBuild / name := "sangria-straw"
 ThisBuild / organization := "io.github.d-exclaimation"
+ThisBuild / version := "0.1"
 ThisBuild / organizationHomepage := Some(url("https://www.dexclaimation.com"))
 ThisBuild / scmInfo := Some(
   ScmInfo(
