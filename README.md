@@ -6,6 +6,14 @@
 
 A GraphQL Schema Tooling to make schema composing in Scala more convenient, built on Sangria.
 
+## Setup
+
+**Latest Published Version**: `0.2.0`
+
+```sbt
+"io.github.d-exclaimation" % "graphql-soda" % latestVersion
+```
+
 ## Quick start
 
 Target SDL
