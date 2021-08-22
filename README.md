@@ -90,7 +90,7 @@ object Identifiable extends SodaInterfaceType[Unit, Identifiable]("Identifiable"
 Product type
 
 ```scala
-import io.github.dexclaimation.graphqlSoda.schema.{SodaDerivedObject, SodaObjectType}
+import io.github.dexclaimation.graphqlSoda.schema.SodaObjectType
 import sangria.macros.derive.Interfaces
 import sangria.schema._
 
@@ -138,13 +138,13 @@ object ProductQuery extends SodaQuery[ProductRepo, Unit] {
   val Id = Argument("id", StringType)
 
   override def definition: List[Field[ProductRepo, Unit]] = fields(
-    Field("product", OptionType(ProductType),
+    Field("product", OptionType(Product.t),
       description = Some("Returns a product with specific `id`."),
       arguments = Id :: Nil,
       resolve = c => c.ctx.product(c.arg(Id))
     ),
 
-    Field("products", ListType(ProductType),
+    Field("products", ListType(Product.t),
       description = Some("Returns a list of all available products."),
       resolve = _.ctx.products
     )
