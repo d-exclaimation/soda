@@ -4,7 +4,7 @@
 <p align="center"> <h1>GraphQL Soda</h1></p>
 
 
-A GraphQL Schema Tooling to make schema composing in Scala more convenient built on top of Sangria.
+A GraphQL Schema Tooling to make schema composing in Scala more convenient, built on Sangria.
 
 ## Quick start
 
@@ -82,7 +82,8 @@ object Identifiable extends SodaInterfaceType[Unit, Identifiable]("Identifiable"
 Product type
 
 ```scala
-import io.github.dexclaimation.graphqlSoda.schema.SodaObjectType
+import io.github.dexclaimation.graphqlSoda.schema.{SodaDerivedObject, SodaObjectType}
+import sangria.macros.derive.Interfaces
 import sangria.schema._
 
 case class Product(id: String, name: String, description: String) extends Identifiable {
