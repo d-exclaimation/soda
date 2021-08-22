@@ -22,7 +22,7 @@ ThisBuild / developers := List(
 
 crossPaths := false
 
-ThisBuild / description := "Enchant your experience of sangria with some soda"
+ThisBuild / description := "Enchant your experience of graphql with some soda"
 ThisBuild / licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))
 ThisBuild / homepage := Some(url("https://github.com/d-exclaimation/graphql-soda"))
 

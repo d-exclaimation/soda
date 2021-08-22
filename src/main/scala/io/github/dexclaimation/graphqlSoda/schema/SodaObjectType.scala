@@ -28,7 +28,7 @@ abstract class SodaObjectType[Ctx, Val: ClassTag](name: String) {
 
   def definition: List[Field[Ctx, Val]]
 
-  def interfaces: List[PossibleInterface[Ctx, Val]] = Nil
+  def implement: List[PossibleInterface[Ctx, Val]] = Nil
 
   /**
    * Sangria ObjectType derivation.
@@ -37,10 +37,9 @@ abstract class SodaObjectType[Ctx, Val: ClassTag](name: String) {
     name = name,
     description = if (description == "") None else Some(description),
     fieldsFn = () => definition,
-    interfaces = interfaces.map(_.interfaceType),
+    interfaces = implement.map(_.interfaceType),
     instanceCheck = defaultInstanceCheck,
     astDirectives = Vector.empty,
     astNodes = Vector.empty
   )
 }
-
