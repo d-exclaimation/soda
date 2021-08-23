@@ -8,7 +8,7 @@ A GraphQL Schema Tooling to make schema composing in Scala more convenient, buil
 
 ## Setup
 
-**Latest Published Version**: `0.2.0`
+**Latest Published Version**: `0.3.0`
 
 ```sbt
 "io.github.d-exclaimation" % "graphql-soda" % latestVersion
@@ -159,3 +159,10 @@ import sangria.schema._
 
 val schema: Schema[ProductRepo, Unit] = makeSchema(ProductQuery.t)
 ```
+
+## Acknowledgements
+This package is inspired by [`GraphQL Nexus`](https://github.com/graphql-nexus/nexus), [`Slick`](https://scala-slick.org/) and [`Exposed`](https://github.com/JetBrains/Exposed). 
+
+Basically, my effort making [`Sangria`](https://github.com/sangria-graphql/sangria)
+schema definition similar to what's used by [`Akka`](https://akka.io)'s typed AbstractBehaviour [`Slick`](https://scala-slick.org/) 's Table and [`Exposed`](https://github.com/JetBrains/Exposed) 's Table 
+that take advantage of implementing / extending a Trait / Abstract class, but have APIs more closely to [`GraphQL Nexus`](https://github.com/graphql-nexus/nexus).
