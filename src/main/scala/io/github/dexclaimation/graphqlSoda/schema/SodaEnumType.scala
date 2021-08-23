@@ -22,7 +22,7 @@ import sangria.schema.{EnumType, EnumValue}
 abstract class SodaEnumType[T](name: String) {
   def description: String = ""
 
-  def definition: List[EnumValue[T]]
+  def members: List[EnumValue[T]]
 
   /**
    * Sangria EnumType derivation.
@@ -30,6 +30,6 @@ abstract class SodaEnumType[T](name: String) {
   val t: EnumType[T] = EnumType(
     name = name,
     description = if (description == "") None else Some(description),
-    values = definition
+    values = members
   )
 }

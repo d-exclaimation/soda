@@ -8,7 +8,7 @@
 package io.github.dexclaimation.graphqlSoda.schema
 
 import sangria.schema.ObjectType.defaultInstanceCheck
-import sangria.schema.{Field, ObjectType, PossibleInterface}
+import sangria.schema.{ObjectType, PossibleInterface}
 
 import scala.reflect.ClassTag
 
@@ -24,22 +24,29 @@ import scala.reflect.ClassTag
  * @tparam Val Value paired for this Object (*best to implement this on a case class's companion object)
  */
 abstract class SodaObjectType[Ctx, Val: ClassTag](name: String) {
+  type Def = SodaDefinitionBlock[Ctx, Val] => Unit
+
+  private val __block = new SodaDefinitionBlock[Ctx, Val]
+
   def description: String = ""
 
-  def definition: List[Field[Ctx, Val]]
+  def definition: Def
 
   def implement: List[PossibleInterface[Ctx, Val]] = Nil
 
   /**
    * Sangria ObjectType derivation.
    */
-  val t: ObjectType[Ctx, Val] = ObjectType(
-    name = name,
-    description = if (description == "") None else Some(description),
-    fieldsFn = () => definition,
-    interfaces = implement.map(_.interfaceType),
-    instanceCheck = defaultInstanceCheck,
-    astDirectives = Vector.empty,
-    astNodes = Vector.empty
-  )
+  val t: ObjectType[Ctx, Val] = {
+    definition(__block)
+    ObjectType(
+      name = name,
+      description = if (description == "") None else Some(description),
+      fieldsFn = () => __block.typedefs.toList,
+      interfaces = implement.map(_.interfaceType),
+      instanceCheck = defaultInstanceCheck,
+      astDirectives = Vector.empty,
+      astNodes = Vector.empty
+    )
+  }
 }

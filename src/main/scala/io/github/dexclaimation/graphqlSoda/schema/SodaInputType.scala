@@ -7,7 +7,7 @@
 
 package io.github.dexclaimation.graphqlSoda.schema
 
-import sangria.schema.{InputField, InputObjectType}
+import sangria.schema.InputObjectType
 
 /**
  * Soda Implementable Object Type definition.
@@ -20,18 +20,26 @@ import sangria.schema.{InputField, InputObjectType}
  * @tparam Val Value paired for this Object (*best to implement this on a case class's companion object)
  */
 abstract class SodaInputType[Val](name: String) {
+  type Def = SodaInputBlock[Val] => Unit
+
+  private val __block = new SodaInputBlock[Val]()
+
   def description: String = ""
 
-  def definition: List[InputField[Val]]
+  def definition: Def
 
   /**
    * Sangria InputObjectType derivation.
    */
-  val t: InputObjectType[Val] = InputObjectType(
-    name = name,
-    description = if (description == "") None else Some(description),
-    fieldsFn = () => definition,
-    astDirectives = Vector.empty,
-    astNodes = Vector.empty
-  )
+  val t: InputObjectType[Val] = {
+    definition(__block)
+    val fields = __block.typedefs.toList
+    InputObjectType(
+      name = name,
+      description = if (description == "") None else Some(description),
+      fieldsFn = () => fields,
+      astDirectives = Vector.empty,
+      astNodes = Vector.empty
+    )
+  }
 }

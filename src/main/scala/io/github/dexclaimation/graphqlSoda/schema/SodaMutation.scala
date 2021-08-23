@@ -8,7 +8,6 @@
 package io.github.dexclaimation.graphqlSoda.schema
 
 import io.github.dexclaimation.graphqlSoda.utils.MutationField
-import sangria.schema.Field
 
 import scala.reflect.ClassTag
 
@@ -19,12 +18,18 @@ import scala.reflect.ClassTag
  * @tparam Val Mutation Root Value.
  */
 abstract class SodaMutation[Ctx, Val: ClassTag] {
-  def definition: List[Field[Ctx, Val]]
+  type Def = SodaDefinitionBlock[Ctx, Val] => Unit
+
+  private val __block = new SodaDefinitionBlock[Ctx, Val]
+
+  def definition: Def
 
   /**
    * MutationField derivation.
    */
-  val t: MutationField[Ctx, Val] = MutationField(
-    definition: _*
-  )
+  val t: MutationField[Ctx, Val] = {
+    definition(__block)
+    val fields = __block.typedefs.toList
+    MutationField(fields: _*)
+  }
 }

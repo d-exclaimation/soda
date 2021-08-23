@@ -7,7 +7,7 @@
 
 package io.github.dexclaimation.graphqlSoda.schema
 
-import sangria.schema.{ObjectType, UnionType}
+import sangria.schema.UnionType
 
 /**
  * Soda Implementable Union Type definition.
@@ -22,16 +22,24 @@ import sangria.schema.{ObjectType, UnionType}
 abstract class SodaUnionType[Ctx](name: String) {
   def description: String = ""
 
-  def members: List[ObjectType[Ctx, _]]
+  type Def = SodaUnionBlock[Ctx] => Unit
+
+  private val __block = new SodaUnionBlock[Ctx]()
+
+  def definition: Def
 
   /**
    * Sangria UnionType derivation.
    */
-  val t: UnionType[Ctx] = UnionType(
-    name = name,
-    description = if (description.isEmpty) None else Some(description),
-    typesFn = () => members,
-    astDirectives = Vector.empty,
-    astNodes = Vector.empty
-  )
+  val t: UnionType[Ctx] = {
+    definition(__block)
+    val fields = __block.typedefs.toList
+    UnionType(
+      name = name,
+      description = if (description.isEmpty) None else Some(description),
+      typesFn = () => fields,
+      astDirectives = Vector.empty,
+      astNodes = Vector.empty
+    )
+  }
 }
