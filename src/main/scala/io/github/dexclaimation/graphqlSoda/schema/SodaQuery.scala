@@ -8,7 +8,6 @@
 package io.github.dexclaimation.graphqlSoda.schema
 
 import io.github.dexclaimation.graphqlSoda.utils.QueryField
-import sangria.schema.Field
 
 import scala.reflect.ClassTag
 
@@ -19,12 +18,18 @@ import scala.reflect.ClassTag
  * @tparam Val Query Root Value.
  */
 abstract class SodaQuery[Ctx, Val: ClassTag] {
-  def definition: List[Field[Ctx, Val]]
+  type Def = SodaDefinitionBlock[Ctx, Val] => Unit
+
+  private val __block = new SodaDefinitionBlock[Ctx, Val]
+
+  def definition: Def
 
   /**
    * QueryField derivation.
    */
-  val t: QueryField[Ctx, Val] = QueryField(
-    definition: _*
-  )
+  val t: QueryField[Ctx, Val] = {
+    definition(__block)
+    val fields = __block.typedefs.toList
+    QueryField(fields: _*)
+  }
 }

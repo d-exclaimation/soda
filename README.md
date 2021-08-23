@@ -8,7 +8,7 @@ A GraphQL Schema Tooling to make schema composing in Scala more convenient, buil
 
 ## Setup
 
-**Latest Published Version**: `0.2.0`
+**Latest Published Version**: `0.3.0`
 
 ```sbt
 "io.github.d-exclaimation" % "graphql-soda" % latestVersion
@@ -45,7 +45,7 @@ type Query {
 ### Picture Object Type
 
 ```scala
-import io.github.dexclaimation.graphqlSoda.schema.SodaObjectType
+import io.github.dexclaimation.graphqlSoda.schema._
 import sangria.schema._
 
 case class Picture(
@@ -57,11 +57,11 @@ case class Picture(
 object Picture extends SodaObjectType[Unit, Picture]("Picture") {
   override def description: String = "The product picture"
 
-  override def definition: List[Field[Unit, Picture]] = fields(
-    Field("width", IntType, resolve = _.value.width),
-    Field("height", IntType, resolve = _.value.height),
-    Field("url", OptionType(StringType), resolve = _.value.url)
-  )
+  def definition: Def = { t =>
+    t.prop("width", IntType, of = _.width)
+    t.prop("height", IntType, of = _.height)
+    t.prop("url", OptionType(StringType), of = _.url)
+  }
 }
 ```
 
@@ -70,7 +70,7 @@ object Picture extends SodaObjectType[Unit, Picture]("Picture") {
 Identifiable trait
 
 ```scala
-import io.github.dexclaimation.graphqlSoda.schema.SodaInterfaceType
+import io.github.dexclaimation.graphqlSoda.schema._
 import sangria.schema._
 
 trait Identifiable {
@@ -81,17 +81,16 @@ object Identifiable extends SodaInterfaceType[Unit, Identifiable]("Identifiable"
 
   override def description: String = "Entity that can be identified"
 
-  override def definition: List[Field[Unit, Identifiable]] = fields(
-    Field("id", StringType, resolve = _.value.id)
-  )
+  override def definition: Def = { t =>
+    t.id(of = _.id)
+  }
 }
 ```
 
 Product type
 
 ```scala
-import io.github.dexclaimation.graphqlSoda.schema.SodaObjectType
-import sangria.macros.derive.Interfaces
+import io.github.dexclaimation.graphqlSoda.schema._
 import sangria.schema._
 
 case class Product(id: String, name: String, description: String) extends Identifiable {
@@ -100,26 +99,25 @@ case class Product(id: String, name: String, description: String) extends Identi
 }
 
 object Product extends SodaObjectType[Unit, Product]("Product") {
-  val Size = Argument("size", IntType)
+  override def definition: Def = { t =>
+    val s = Argument("size", IntType)
 
-  override def definition: List[Field[Unit, Product]] = fields(
-    Field("id", IDType, resolve = _.value.id),
-    Field("name", StringType, resolve = _.value.name),
-    Field("description", StringType, resolve = _.value.description),
-    Field("picture", Picture.t,
-      arguments = Size :: Nil,
-      resolve = ctx => ctx.value.picture(ctx.arg(Size))
+    t.id(of = _.id)
+    t.prop("name", StringType, of = _.name)
+    t.prop("description", StringType, of = _.description)
+    t.field("picture", Picture.t, args = s :: Nil)( c =>
+      c.value.picture(c arg s)
     )
-  )
+  }
 
-  override def implement: List[PossibleInterface[Unit, Product]] = interfaces(Identifable.t)
+  override def implement: List[PossibleInterface[Unit, Product]] = interfaces(Identifiable.t)
 }
 ```
 
 ### Query type
 
 ```scala
-import io.github.dexclaimation.graphqlSoda.schema.SodaQuery
+import io.github.dexclaimation.graphqlSoda.schema._
 import sangria.schema._
 
 class ProductRepo {
@@ -135,20 +133,21 @@ class ProductRepo {
 }
 
 object ProductQuery extends SodaQuery[ProductRepo, Unit] {
-  val Id = Argument("id", StringType)
 
-  override def definition: List[Field[ProductRepo, Unit]] = fields(
-    Field("product", OptionType(Product.t),
-      description = Some("Returns a product with specific `id`."),
-      arguments = Id :: Nil,
-      resolve = c => c.ctx.product(c.arg(Id))
-    ),
+  override def definition: Def = { t =>
+    val id = Argument("id", IDType)
 
-    Field("products", ListType(Product.t),
-      description = Some("Returns a list of all available products."),
-      resolve = _.ctx.products
-    )
-  )
+    t.field("product", OptionType(Product.t),
+      description = "Returns a product with specific `id`.",
+      args = id :: Nil
+    ) { c =>
+      c.ctx.product(c.arg(id))
+    }
+
+    t.field("products", ListType(Product.t),
+      description = "Returns a list of all available products."
+    )(_.ctx.products)
+  }
 }
 ```
 
@@ -160,3 +159,10 @@ import sangria.schema._
 
 val schema: Schema[ProductRepo, Unit] = makeSchema(ProductQuery.t)
 ```
+
+## Acknowledgements
+This package is inspired by [`GraphQL Nexus`](https://github.com/graphql-nexus/nexus), [`Slick`](https://scala-slick.org/) and [`Exposed`](https://github.com/JetBrains/Exposed). 
+
+Basically, my effort making [`Sangria`](https://github.com/sangria-graphql/sangria)
+schema definition similar to what's used by [`Akka`](https://akka.io)'s typed AbstractBehaviour [`Slick`](https://scala-slick.org/) 's Table and [`Exposed`](https://github.com/JetBrains/Exposed) 's Table 
+that take advantage of implementing / extending a Trait / Abstract class, but have APIs more closely to [`GraphQL Nexus`](https://github.com/graphql-nexus/nexus).

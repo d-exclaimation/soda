@@ -9,7 +9,7 @@
 package io.github.dexclaimation.graphqlSoda.schema
 
 import sangria.schema.InterfaceType.emptyPossibleTypes
-import sangria.schema.{Field, InterfaceType, PossibleInterface}
+import sangria.schema.{InterfaceType, PossibleInterface}
 
 import scala.reflect.ClassTag
 
@@ -25,22 +25,30 @@ import scala.reflect.ClassTag
  * @tparam Val Value paired for this Interface (*best to implement this on a case class's companion object)
  */
 abstract class SodaInterfaceType[Ctx, Val: ClassTag](name: String) {
+  type Def = SodaDefinitionBlock[Ctx, Val] => Unit
+
+  private val __block = new SodaDefinitionBlock[Ctx, Val]
+
   def description: String = ""
 
-  def definition: List[Field[Ctx, Val]]
+  def definition: Def
 
   def implement: List[PossibleInterface[Ctx, Val]] = Nil
 
   /**
    * Sangria InterfaceType derivation.
    */
-  def t: InterfaceType[Ctx, Val] = InterfaceType(
-    name = name,
-    description = Some(description),
-    fieldsFn = () => definition,
-    interfaces = implement.map(_.interfaceType),
-    manualPossibleTypes = emptyPossibleTypes,
-    astDirectives = Vector.empty,
-    astNodes = Vector.empty
-  )
+  def t: InterfaceType[Ctx, Val] = {
+    definition(__block)
+    val fields = __block.typedefs.toList
+    InterfaceType(
+      name = name,
+      description = Some(description),
+      fieldsFn = () => fields,
+      interfaces = implement.map(_.interfaceType),
+      manualPossibleTypes = emptyPossibleTypes,
+      astDirectives = Vector.empty,
+      astNodes = Vector.empty
+    )
+  }
 }
