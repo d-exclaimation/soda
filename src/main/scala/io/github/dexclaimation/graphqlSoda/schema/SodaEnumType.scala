@@ -27,7 +27,7 @@ abstract class SodaEnumType[T](name: String) {
   /**
    * Sangria EnumType derivation.
    */
-  val t: EnumType[T] = EnumType(
+  lazy val t: EnumType[T] = EnumType(
     name = name,
     description = if (description == "") None else Some(description),
     values = members

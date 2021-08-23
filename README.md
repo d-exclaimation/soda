@@ -104,7 +104,7 @@ object Product extends SodaObjectType[Unit, Product]("Product") {
     t.prop("name", StringType, of = _.name)
     t.prop("description", StringType, of = _.description)
 
-    val s = Argument("size", IntType) // Avoid object static value as the reference can be an issue
+    val s = Argument("size", IntType) // You can have arguments as local variable (object global / static works fine)
     t.field("picture", Picture.t, args = s :: Nil)( c =>
       c.value.picture(c arg s)
     )
@@ -133,9 +133,9 @@ class ProductRepo {
 }
 
 object ProductQuery extends SodaQuery[ProductRepo, Unit] {
-
+  val id = Argument("id", IDType)
+  
   override def definition: Def = { t =>
-    val id = Argument("id", IDType)
     t.field("product", OptionType(Product.t),
       description = "Returns a product with specific `id`.",
       args = id :: Nil

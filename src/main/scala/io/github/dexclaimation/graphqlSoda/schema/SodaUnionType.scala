@@ -31,7 +31,7 @@ abstract class SodaUnionType[Ctx](name: String) {
   /**
    * Sangria UnionType derivation.
    */
-  val t: UnionType[Ctx] = {
+  lazy val t: UnionType[Ctx] = {
     definition(__block)
     val fields = __block.typedefs.toList
     UnionType(

@@ -31,7 +31,7 @@ abstract class SodaInputType[Val](name: String) {
   /**
    * Sangria InputObjectType derivation.
    */
-  val t: InputObjectType[Val] = {
+  lazy val t: InputObjectType[Val] = {
     definition(__block)
     val fields = __block.typedefs.toList
     InputObjectType(
