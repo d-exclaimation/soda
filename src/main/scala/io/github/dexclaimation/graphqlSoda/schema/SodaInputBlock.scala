@@ -19,21 +19,21 @@ class SodaInputBlock[Val] {
   /**
    * Added a properties
    *
-   * @param name        Name of the property field.
-   * @param fieldType   The GraphQL Type of that field.
-   * @param description Additional descriptions.
+   * @param name      Name of the property field.
+   * @param fieldType The GraphQL Type of that field.
+   * @param desc      Additional descriptions.
    */
   def prop[T](
     name: String,
     fieldType: InputType[T],
-    description: String = "",
+    desc: String = "",
   )(implicit res: WithoutInputTypeTags[T]): Unit = {
     typedefs.addOne(
-      if (description.nonEmpty)
+      if (desc.nonEmpty)
         InputField(
           name = name,
           fieldType = fieldType,
-          description = description,
+          description = desc,
         )
       else
         InputField(
@@ -48,21 +48,21 @@ class SodaInputBlock[Val] {
    *
    * @param name         Name of the property field.
    * @param fieldType    The GraphQL Type of that field.
-   * @param description  Additional descriptions.
+   * @param desc         Additional descriptions.
    * @param defaultValue Default value for the given
    */
   def optional[T, Default](
     name: String,
     fieldType: InputType[T],
-    description: String = "",
+    desc: String = "",
     defaultValue: Default
   )(implicit toInput: ToInput[Default, _], res: WithoutInputTypeTags[T]): Unit =
     typedefs.addOne(
-      if (description.nonEmpty)
+      if (desc.nonEmpty)
         InputField(
           name = name,
           fieldType = fieldType,
-          description = description,
+          description = desc,
           defaultValue = defaultValue
         )
       else
@@ -76,12 +76,12 @@ class SodaInputBlock[Val] {
   /** ID Properties */
   def id(
     name: String = "id",
-    description: String = ""
+    desc: String = ""
   )(implicit res: WithoutInputTypeTags[String]): Unit =
     prop[String](
       name = name,
       fieldType = IDType,
-      description = description,
+      desc = desc,
     )(res)
 
 }

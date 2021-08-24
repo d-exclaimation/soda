@@ -8,8 +8,8 @@
 
 package io.github.dexclaimation.graphqlSoda.schema
 
+import sangria.schema.InterfaceType
 import sangria.schema.InterfaceType.emptyPossibleTypes
-import sangria.schema.{InterfaceType, PossibleInterface}
 
 import scala.reflect.ClassTag
 
@@ -29,11 +29,9 @@ abstract class SodaInterfaceType[Ctx, Val: ClassTag](name: String) {
 
   private val __block = new SodaDefinitionBlock[Ctx, Val]
 
-  def description: String = ""
+  def desc: String = ""
 
   def definition: Def
-
-  def implement: List[PossibleInterface[Ctx, Val]] = Nil
 
   /**
    * Sangria InterfaceType derivation.
@@ -41,11 +39,12 @@ abstract class SodaInterfaceType[Ctx, Val: ClassTag](name: String) {
   def t: InterfaceType[Ctx, Val] = {
     definition(__block)
     val fields = __block.typedefs.toList
+    val interfaces = __block.interfaces.map(_.interfaceType).toList
     InterfaceType(
       name = name,
-      description = Some(description),
+      description = Some(desc),
       fieldsFn = () => fields,
-      interfaces = implement.map(_.interfaceType),
+      interfaces = interfaces,
       manualPossibleTypes = emptyPossibleTypes,
       astDirectives = Vector.empty,
       astNodes = Vector.empty

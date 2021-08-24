@@ -7,8 +7,8 @@
 
 package io.github.dexclaimation.graphqlSoda.schema
 
+import sangria.schema.ObjectType
 import sangria.schema.ObjectType.defaultInstanceCheck
-import sangria.schema.{ObjectType, PossibleInterface}
 
 import scala.reflect.ClassTag
 
@@ -28,11 +28,9 @@ abstract class SodaObjectType[Ctx, Val: ClassTag](name: String) {
 
   private val __block = new SodaDefinitionBlock[Ctx, Val]
 
-  def description: String = ""
+  def desc: String = ""
 
   def definition: Def
-
-  def implement: List[PossibleInterface[Ctx, Val]] = Nil
 
   /**
    * Sangria ObjectType derivation.
@@ -41,9 +39,9 @@ abstract class SodaObjectType[Ctx, Val: ClassTag](name: String) {
     definition(__block)
     ObjectType(
       name = name,
-      description = if (description == "") None else Some(description),
+      description = if (desc == "") None else Some(desc),
       fieldsFn = () => __block.typedefs.toList,
-      interfaces = implement.map(_.interfaceType),
+      interfaces = __block.interfaces.map(_.interfaceType).toList,
       instanceCheck = defaultInstanceCheck,
       astDirectives = Vector.empty,
       astNodes = Vector.empty

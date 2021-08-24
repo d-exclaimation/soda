@@ -6,14 +6,13 @@
 
 A GraphQL Schema Tooling to make schema composing in Scala more convenient, built on Sangria.
 
-
 ## Documentation
 
 [Docs](https://graphqlsoda.netlify.app)
 
 ## Setup
 
-**Latest Published Version**: `0.3.1`
+**Latest Published Version**: `0.4.0`
 
 ```sbt
 "io.github.d-exclaimation" % "graphql-soda" % latestVersion
@@ -60,7 +59,7 @@ case class Picture(
 )
 
 object Picture extends SodaObjectType[Unit, Picture]("Picture") {
-  override def description: String = "The product picture"
+  override def desc = "The product picture"
 
   def definition: Def = { t =>
     t.prop("width", IntType, of = _.width)
@@ -84,9 +83,9 @@ trait Identifiable {
 
 object Identifiable extends SodaInterfaceType[Unit, Identifiable]("Identifiable") {
 
-  override def description: String = "Entity that can be identified"
+  override def desc = "Entity that can be identified"
 
-  override def definition: Def = { t =>
+  def definition: Def = { t =>
     t.id(of = _.id)
   }
 }
@@ -104,18 +103,18 @@ case class Product(id: String, name: String, description: String) extends Identi
 }
 
 object Product extends SodaObjectType[Unit, Product]("Product") {
-  override def definition: Def = { t =>
+  def definition: Def = { t =>
+    t.implements(Identifiable.t)
+
     t.id(of = _.id)
     t.prop("name", StringType, of = _.name)
     t.prop("description", StringType, of = _.description)
 
     val s = Argument("size", IntType) // You can have arguments as local variable (object global / static works fine)
-    t.field("picture", Picture.t, args = s :: Nil)( c =>
+    t.field("picture", Picture.t, args = s :: Nil)(c =>
       c.value.picture(c arg s)
     )
   }
-
-  override def implement: List[PossibleInterface[Unit, Product]] = interfaces(Identifiable.t)
 }
 ```
 
@@ -139,17 +138,17 @@ class ProductRepo {
 
 object ProductQuery extends SodaQuery[ProductRepo, Unit] {
   val id = Argument("id", IDType)
-  
-  override def definition: Def = { t =>
+
+  def definition: Def = { t =>
     t.field("product", OptionType(Product.t),
-      description = "Returns a product with specific `id`.",
+      desc = "Returns a product with specific `id`.",
       args = id :: Nil
     ) { c =>
       c.ctx.product(c.arg(id))
     }
 
     t.field("products", ListType(Product.t),
-      description = "Returns a list of all available products."
+      desc = "Returns a list of all available products."
     )(_.ctx.products)
   }
 }
@@ -165,10 +164,16 @@ val schema: Schema[ProductRepo, Unit] = makeSchema(ProductQuery.t)
 ```
 
 ## Acknowledgements
-This package is inspired by [`GraphQL Nexus`](https://github.com/graphql-nexus/nexus), [`Slick`](https://scala-slick.org/) and [`Exposed`](https://github.com/JetBrains/Exposed). 
+
+This package is inspired by [`GraphQL Nexus`](https://github.com/graphql-nexus/nexus)
+, [`Slick`](https://scala-slick.org/) and [`Exposed`](https://github.com/JetBrains/Exposed).
 
 Basically, my effort making [`Sangria`](https://github.com/sangria-graphql/sangria)
-schema definition similar to what's used by [`Akka`](https://akka.io)'s typed AbstractBehaviour [`Slick`](https://scala-slick.org/) 's Table and [`Exposed`](https://github.com/JetBrains/Exposed) 's Table 
-that take advantage of implementing / extending a Trait / Abstract class, but have APIs more closely to [`GraphQL Nexus`](https://github.com/graphql-nexus/nexus).
+schema definition similar to what's used by [`Akka`](https://akka.io)'s typed
+AbstractBehaviour [`Slick`](https://scala-slick.org/) 's Table and [`Exposed`](https://github.com/JetBrains/Exposed) 's
+Table that take advantage of implementing / extending a Trait / Abstract class, but have APIs more closely
+to [`GraphQL Nexus`](https://github.com/graphql-nexus/nexus).
 
-<i>Icons made by <a href="" title="fjstudio">fjstudio</a> from <a href="https://www.flaticon.com/" title="Flaticon">flaticon</a></i>
+<i>Icons made by <a href="" title="fjstudio">fjstudio</a> from <a href="https://www.flaticon.com/" title="Flaticon">
+flaticon</a></i>
+

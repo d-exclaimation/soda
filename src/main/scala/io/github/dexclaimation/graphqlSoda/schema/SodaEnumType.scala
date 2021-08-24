@@ -20,7 +20,7 @@ import sangria.schema.{EnumType, EnumValue}
  * @tparam T Value paired for this Enum (*best to implement this on a case class's companion object)
  */
 abstract class SodaEnumType[T](name: String) {
-  def description: String = ""
+  def desc: String = ""
 
   def members: List[EnumValue[T]]
 
@@ -29,7 +29,7 @@ abstract class SodaEnumType[T](name: String) {
    */
   lazy val t: EnumType[T] = EnumType(
     name = name,
-    description = if (description == "") None else Some(description),
+    description = if (desc == "") None else Some(desc),
     values = members
   )
 }

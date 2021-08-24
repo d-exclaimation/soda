@@ -24,7 +24,7 @@ abstract class SodaInputType[Val](name: String) {
 
   private val __block = new SodaInputBlock[Val]()
 
-  def description: String = ""
+  def desc: String = ""
 
   def definition: Def
 
@@ -36,7 +36,7 @@ abstract class SodaInputType[Val](name: String) {
     val fields = __block.typedefs.toList
     InputObjectType(
       name = name,
-      description = if (description == "") None else Some(description),
+      description = if (desc == "") None else Some(desc),
       fieldsFn = () => fields,
       astDirectives = Vector.empty,
       astNodes = Vector.empty

@@ -20,7 +20,7 @@ import sangria.schema.UnionType
  * @tparam Ctx Context value for all of the members.
  */
 abstract class SodaUnionType[Ctx](name: String) {
-  def description: String = ""
+  def desc: String = ""
 
   type Def = SodaUnionBlock[Ctx] => Unit
 
@@ -36,7 +36,7 @@ abstract class SodaUnionType[Ctx](name: String) {
     val fields = __block.typedefs.toList
     UnionType(
       name = name,
-      description = if (description.isEmpty) None else Some(description),
+      description = if (desc.isEmpty) None else Some(desc),
       typesFn = () => fields,
       astDirectives = Vector.empty,
       astNodes = Vector.empty

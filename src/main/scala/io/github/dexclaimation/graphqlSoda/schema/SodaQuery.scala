@@ -18,9 +18,8 @@ import scala.reflect.ClassTag
  * @tparam Val Query Root Value.
  */
 abstract class SodaQuery[Ctx, Val: ClassTag] {
-  type Def = SodaDefinitionBlock[Ctx, Val] => Unit
-
-  private val __block = new SodaDefinitionBlock[Ctx, Val]
+  private val __block = new SodaRootBlock[Ctx, Val]
+  type Def = __block.type => Unit
 
   def definition: Def
 
@@ -29,7 +28,7 @@ abstract class SodaQuery[Ctx, Val: ClassTag] {
    */
   lazy val t: QueryField[Ctx, Val] = {
     definition(__block)
-    val fields = __block.typedefs.toList
+    val fields = __block.fields.toList
     QueryField(fields: _*)
   }
 }
