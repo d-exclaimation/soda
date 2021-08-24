@@ -6,6 +6,11 @@
 
 A GraphQL Schema Tooling to make schema composing in Scala more convenient, built on Sangria.
 
+
+## Documentation
+
+[Docs](https://graphqlsoda.netlify.app)
+
 ## Setup
 
 **Latest Published Version**: `0.3.1`
