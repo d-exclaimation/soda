@@ -19,7 +19,7 @@ import scala.reflect.ClassTag
  */
 abstract class SodaQuery[Ctx, Val: ClassTag] {
   private val __block = new SodaRootBlock[Ctx, Val]
-  type Def = __block.type => Unit
+  type Def = SodaRootBlock[Ctx, Val] => Unit
 
   def definition: Def
 
