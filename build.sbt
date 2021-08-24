@@ -2,7 +2,7 @@ scalaVersion := "2.13.3"
 
 ThisBuild / name := "graphql-soda"
 ThisBuild / organization := "io.github.d-exclaimation"
-ThisBuild / version := "0.4.0"
+ThisBuild / version := "0.4.1"
 ThisBuild / organizationHomepage := Some(url("https://www.dexclaimation.com"))
 ThisBuild / scmInfo := Some(
   ScmInfo(
