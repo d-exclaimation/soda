@@ -8,7 +8,7 @@ A GraphQL Schema Tooling to make schema composing in Scala more convenient, buil
 
 ## Documentation
 
-[Docs](https://graphqlsoda.netlify.app)
+[Docs](https://soda-tools.netlify.app)
 
 ## Setup
 
