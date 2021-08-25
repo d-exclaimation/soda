@@ -1,11 +1,11 @@
 //
 //  SodaEnumType.scala
-//  graphql-soda
+//  soda
 //
 //  Created by d-exclaimation on 3:38 PM.
 //
 
-package io.github.dexclaimation.graphqlSoda.schema
+package io.github.dexclaimation.soda.schema
 
 import sangria.schema.{EnumType, EnumValue}
 

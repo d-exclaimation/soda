@@ -1,13 +1,13 @@
 //
 //  SodaQuery.scala
-//  graphql-soda
+//  soda
 //
 //  Created by d-exclaimation on 3:52 PM.
 //
 
-package io.github.dexclaimation.graphqlSoda.schema
+package io.github.dexclaimation.soda.schema
 
-import io.github.dexclaimation.graphqlSoda.utils.QueryField
+import io.github.dexclaimation.soda.utils.QueryField
 
 import scala.reflect.ClassTag
 

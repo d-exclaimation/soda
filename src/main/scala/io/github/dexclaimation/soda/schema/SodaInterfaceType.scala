@@ -1,12 +1,12 @@
 //
 //  GraphQLInterface.scala
-//  graphql-soda
+//  soda
 //
 //  Created by d-exclaimation on 2:19 PM.
 //
 
 
-package io.github.dexclaimation.graphqlSoda.schema
+package io.github.dexclaimation.soda.schema
 
 import sangria.schema.InterfaceType
 import sangria.schema.InterfaceType.emptyPossibleTypes

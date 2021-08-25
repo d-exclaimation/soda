@@ -1,13 +1,13 @@
 //
 //  SodaMutation.scala
-//  graphql-soda
+//  soda
 //
 //  Created by d-exclaimation on 4:01 PM.
 //
 
-package io.github.dexclaimation.graphqlSoda.schema
+package io.github.dexclaimation.soda.schema
 
-import io.github.dexclaimation.graphqlSoda.utils.MutationField
+import io.github.dexclaimation.soda.utils.MutationField
 
 import scala.reflect.ClassTag
 

@@ -1,12 +1,12 @@
 //
 //  MutationField.scala
-//  graphql-soda
+//  soda
 //
 //  Created by d-exclaimation on 5:40 PM.
 //
 
 
-package io.github.dexclaimation.graphqlSoda.utils
+package io.github.dexclaimation.soda.utils
 
 import sangria.schema.{Field, ObjectType}
 

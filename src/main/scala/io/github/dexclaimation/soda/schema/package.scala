@@ -1,4 +1,4 @@
-package io.github.dexclaimation.graphqlSoda
+package io.github.dexclaimation.soda
 
 import sangria.marshalling.{FromInput, ToInput}
 import sangria.schema.{Argument, ArgumentType, InputType, WithoutInputTypeTags}

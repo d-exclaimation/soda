@@ -1,13 +1,13 @@
 scalaVersion := "2.13.3"
 
-ThisBuild / name := "graphql-soda"
+ThisBuild / name := "soda"
 ThisBuild / organization := "io.github.d-exclaimation"
 ThisBuild / version := "0.4.1"
 ThisBuild / organizationHomepage := Some(url("https://www.dexclaimation.com"))
 ThisBuild / scmInfo := Some(
   ScmInfo(
-    url("https://github.com/d-exclaimation/graphql-soda"),
-    "scm:git@github.d-exclaimation/graphql-soda.git"
+    url("https://github.com/d-exclaimation/soda"),
+    "scm:git@github.d-exclaimation/soda.git"
   )
 )
 
@@ -22,9 +22,9 @@ ThisBuild / developers := List(
 
 crossPaths := false
 
-ThisBuild / description := "Enchant your experience of graphql with some soda"
+ThisBuild / description := "Enchant your experience of GraphQL with some soda"
 ThisBuild / licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))
-ThisBuild / homepage := Some(url("https://github.com/d-exclaimation/graphql-soda"))
+ThisBuild / homepage := Some(url("https://github.com/d-exclaimation/soda"))
 
 // Remove all additional repository other than Maven Central from POM
 ThisBuild / pomIncludeRepository := { _ => false }

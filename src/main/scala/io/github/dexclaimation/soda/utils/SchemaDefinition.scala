@@ -1,15 +1,15 @@
 //
 //  SchemaDefinition.scala
-//  graphql-soda
+//  soda
 //
 //  Created by d-exclaimation on 3:35 PM.
 //
 
-package io.github.dexclaimation.graphqlSoda.utils
+package io.github.dexclaimation.soda.utils
 
-import io.github.dexclaimation.graphqlSoda.utils.MutationField.makeMutation
-import io.github.dexclaimation.graphqlSoda.utils.QueryField.makeQuery
-import io.github.dexclaimation.graphqlSoda.utils.SubscriptionField.makeSubscription
+import io.github.dexclaimation.soda.utils.MutationField.makeMutation
+import io.github.dexclaimation.soda.utils.QueryField.makeQuery
+import io.github.dexclaimation.soda.utils.SubscriptionField.makeSubscription
 import sangria.schema.Schema
 
 import scala.reflect.ClassTag

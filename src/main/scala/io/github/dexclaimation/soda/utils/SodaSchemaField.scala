@@ -1,12 +1,12 @@
 //
 //  RootSchemaField.scala
-//  graphql-soda
+//  soda
 //
 //  Created by d-exclaimation on 3:35 PM.
 //
 
 
-package io.github.dexclaimation.graphqlSoda.utils
+package io.github.dexclaimation.soda.utils
 
 /**
  * Soda Root Schema Field

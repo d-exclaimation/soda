@@ -1,12 +1,12 @@
 //
 //  SodaDefinitionBlock.scala
-//  graphql-soda
+//  soda
 //
 //  Created by d-exclaimation on 1:27 PM.
 //
 
 
-package io.github.dexclaimation.graphqlSoda.schema
+package io.github.dexclaimation.soda.schema
 
 import sangria.schema.{Action, Argument, Context, Field, IDType, OutputType, PossibleInterface, ValidOutType}
 
