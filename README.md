@@ -75,7 +75,6 @@ Identifiable trait
 
 ```scala
 import io.github.dexclaimation.soda.schema._
-import sangria.schema._
 
 trait Identifiable {
   def id: String
@@ -165,14 +164,13 @@ val schema: Schema[ProductRepo, Unit] = makeSchema(ProductQuery.t)
 
 ## Acknowledgements
 
-This package is inspired by [`Nexus`](https://github.com/graphql-nexus/nexus)
-, [`Slick`](https://scala-slick.org/) and [`Exposed`](https://github.com/JetBrains/Exposed).
+This package is inspired by [Nexus](https://github.com/graphql-nexus/nexus)
+, [Slick](https://scala-slick.org/), and [Exposed](https://github.com/JetBrains/Exposed).
 
 Basically, my effort making [Sangria](https://github.com/sangria-graphql/sangria)
-schema definition similar to what's used by [Akka](https://akka.io)'s typed
-AbstractBehaviour, [Slick](https://scala-slick.org/), and [Exposed](https://github.com/JetBrains/Exposed) 's Table; that
-take advantage of implementing / extending a Trait / Abstract class, but have APIs more closely
-to [Nexus](https://github.com/graphql-nexus/nexus).
+schema definition similar to what's used by [Slick](https://scala-slick.org/)
+and [Exposed](https://github.com/JetBrains/Exposed) 's Table; that take advantage of implementing / extending a Trait /
+Abstract class, but have APIs more closely to [Nexus](https://github.com/graphql-nexus/nexus).
 
 <i>Icons made by <a href="" title="fjstudio">fjstudio</a> from <a href="https://www.flaticon.com/" title="Flaticon">
 flaticon</a></i>
