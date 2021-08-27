@@ -20,6 +20,8 @@ import sangria.schema.InputObjectType
  * @tparam Val Value paired for this Object (*best to implement this on a case class's companion object)
  */
 abstract class SodaInputType[Val](name: String) {
+
+  /** Definition Block */
   type Def = SodaInputBlock[Val] => Unit
 
   private val __block = new SodaInputBlock[Val]()

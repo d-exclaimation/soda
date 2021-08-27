@@ -19,6 +19,8 @@ import scala.reflect.ClassTag
  */
 abstract class SodaMutation[Ctx, Val: ClassTag] {
   private val __block = new SodaRootBlock[Ctx, Val]
+
+  /** Definition Block */
   type Def = SodaRootBlock[Ctx, Val] => Unit
 
   def definition: Def
