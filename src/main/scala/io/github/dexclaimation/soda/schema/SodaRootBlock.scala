@@ -7,6 +7,7 @@
 
 package io.github.dexclaimation.soda.schema
 
+import sangria.execution.FieldTag
 import sangria.schema.{Action, Argument, Context, Field, IDType, OutputType, ValidOutType}
 
 import scala.collection.mutable
@@ -65,11 +66,15 @@ class SodaRootBlock[Ctx, Val: ClassTag] {
     fieldType: OutputType[Out],
     desc: String = "",
     args: List[Argument[_]] = Nil,
+    deprecated: Option[String] = None,
+    tags: List[FieldTag] = Nil,
   )(resolve: Context[Ctx, Val] => Action[Ctx, Res])
     (implicit ev: ValidOutType[Res, Out]): Unit = {
     fields.addOne(
       Field(name, fieldType, if (desc.isEmpty) None else Some(desc), args,
-        resolve = c => resolve(c)
+        deprecationReason = deprecated,
+        tags = tags,
+        resolve = ctx => resolve(ctx)
       )
     )
   }

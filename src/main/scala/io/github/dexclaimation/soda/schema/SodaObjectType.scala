@@ -39,7 +39,7 @@ abstract class SodaObjectType[Ctx, Val: ClassTag](name: String) {
     definition(__block)
     ObjectType(
       name = name,
-      description = if (desc == "") None else Some(desc),
+      description = if (desc.isEmpty) None else Some(desc),
       fieldsFn = () => __block.typedefs.toList,
       interfaces = __block.interfaces.map(_.interfaceType).toList,
       instanceCheck = defaultInstanceCheck,

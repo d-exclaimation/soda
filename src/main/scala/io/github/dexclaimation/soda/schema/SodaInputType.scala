@@ -36,7 +36,7 @@ abstract class SodaInputType[Val](name: String) {
     val fields = __block.typedefs.toList
     InputObjectType(
       name = name,
-      description = if (desc == "") None else Some(desc),
+      description = if (desc.isEmpty) None else Some(desc),
       fieldsFn = () => fields,
       astDirectives = Vector.empty,
       astNodes = Vector.empty

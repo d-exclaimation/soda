@@ -29,7 +29,7 @@ abstract class SodaEnumType[T](name: String) {
    */
   lazy val t: EnumType[T] = EnumType(
     name = name,
-    description = if (desc == "") None else Some(desc),
+    description = if (desc.isEmpty) None else Some(desc),
     values = members
   )
 }
