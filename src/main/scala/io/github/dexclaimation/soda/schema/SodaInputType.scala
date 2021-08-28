@@ -20,6 +20,8 @@ import sangria.schema.InputObjectType
  * @tparam Val Value paired for this Object (*best to implement this on a case class's companion object)
  */
 abstract class SodaInputType[Val](name: String) {
+
+  /** Definition Block */
   type Def = SodaInputBlock[Val] => Unit
 
   private val __block = new SodaInputBlock[Val]()
@@ -36,7 +38,7 @@ abstract class SodaInputType[Val](name: String) {
     val fields = __block.typedefs.toList
     InputObjectType(
       name = name,
-      description = if (desc == "") None else Some(desc),
+      description = if (desc.isEmpty) None else Some(desc),
       fieldsFn = () => fields,
       astDirectives = Vector.empty,
       astNodes = Vector.empty

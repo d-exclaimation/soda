@@ -25,6 +25,8 @@ import scala.reflect.ClassTag
  * @tparam Val Value paired for this Interface (*best to implement this on a case class's companion object)
  */
 abstract class SodaInterfaceType[Ctx, Val: ClassTag](name: String) {
+
+  /** Definition Block */
   type Def = SodaDefinitionBlock[Ctx, Val] => Unit
 
   private val __block = new SodaDefinitionBlock[Ctx, Val]

@@ -8,6 +8,7 @@
 
 package io.github.dexclaimation.soda.schema
 
+import sangria.execution.FieldTag
 import sangria.schema.{Action, Argument, Context, Field, IDType, OutputType, PossibleInterface, ValidOutType}
 
 import scala.collection.mutable
@@ -20,11 +21,11 @@ class SodaDefinitionBlock[Ctx, Val: ClassTag] {
   /**
    * Added a field from properties
    *
-   * @param name        Name of the property field.
-   * @param fieldType   The GraphQL Type of that field.
-   * @param desc Additional descriptions.
-   * @param args        Required arguments from the field.
-   * @param of          Getter of the field
+   * @param name      Name of the property field.
+   * @param fieldType The GraphQL Type of that field.
+   * @param desc      Additional descriptions.
+   * @param args      Required arguments from the field.
+   * @param of        Getter of the field
    */
   def prop[Out, Res](
     name: String,
@@ -35,9 +36,7 @@ class SodaDefinitionBlock[Ctx, Val: ClassTag] {
     implicit ev: ValidOutType[Res, Out]
   ): Unit = {
     typedefs.addOne(
-      Field(
-        name = name,
-        fieldType = fieldType,
+      Field(name, fieldType,
         description = if (desc.isEmpty) None else Some(desc),
         arguments = Nil,
         resolve = c => of(c.value)
@@ -51,9 +50,7 @@ class SodaDefinitionBlock[Ctx, Val: ClassTag] {
     desc: String = "",
     of: Val => Action[Ctx, Res]
   )(implicit ev: ValidOutType[Res, String]): Unit =
-    prop[String, Res](
-      name = name,
-      fieldType = IDType,
+    prop[String, Res](name, IDType,
       desc = desc,
       of = of
     )(ev)
@@ -61,25 +58,27 @@ class SodaDefinitionBlock[Ctx, Val: ClassTag] {
   /**
    * Added a field either from a properties or computed
    *
-   * @param name        Name of the property field.
-   * @param fieldType   The GraphQL Type of that field.
-   * @param desc Additional descriptions.
-   * @param args        Required arguments from the field.
-   * @param resolve     Compute or resolve the field
+   * @param name      Name of the property field.
+   * @param fieldType The GraphQL Type of that field.
+   * @param desc      Additional descriptions.
+   * @param args      Required arguments from the field.
+   * @param resolve   Compute or resolve the field
    */
   def field[Out, Res](
     name: String,
     fieldType: OutputType[Out],
     desc: String = "",
     args: List[Argument[_]] = Nil,
+    deprecated: Option[String] = None,
+    tags: List[FieldTag] = Nil,
   )(resolve: Context[Ctx, Val] => Action[Ctx, Res])
     (implicit ev: ValidOutType[Res, Out]): Unit = {
     typedefs.addOne(
-      Field(
-        name = name,
-        fieldType = fieldType,
+      Field(name, fieldType,
         description = if (desc.isEmpty) None else Some(desc),
         arguments = args,
+        deprecationReason = deprecated,
+        tags = tags,
         resolve = c => resolve(c)
       )
     )

@@ -24,6 +24,8 @@ import scala.reflect.ClassTag
  * @tparam Val Value paired for this Object (*best to implement this on a case class's companion object)
  */
 abstract class SodaObjectType[Ctx, Val: ClassTag](name: String) {
+
+  /** Definition block */
   type Def = SodaDefinitionBlock[Ctx, Val] => Unit
 
   private val __block = new SodaDefinitionBlock[Ctx, Val]
@@ -39,7 +41,7 @@ abstract class SodaObjectType[Ctx, Val: ClassTag](name: String) {
     definition(__block)
     ObjectType(
       name = name,
-      description = if (desc == "") None else Some(desc),
+      description = if (desc.isEmpty) None else Some(desc),
       fieldsFn = () => __block.typedefs.toList,
       interfaces = __block.interfaces.map(_.interfaceType).toList,
       instanceCheck = defaultInstanceCheck,

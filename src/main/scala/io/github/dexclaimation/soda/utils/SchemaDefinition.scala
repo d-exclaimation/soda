@@ -51,4 +51,23 @@ object SchemaDefinition {
       subscription = if (SubscriptionType.fields.isEmpty) None else Some(SubscriptionType)
     )
   }
+
+
+  /**
+   * Make schema and compile artifacts into the resource folder
+   * Default file path: "src/main/resources/artifacts/schema.graphql"
+   *
+   * @param fields The schema fields to be composed into a single schema.
+   * @param path   The resulting path.
+   * @tparam C The context type.
+   * @tparam T The root value type.
+   * @return The schema and perform side effect writing the SDL into "src/main/resources/artifacts/schema.graphql"
+   */
+  def makeSchemaAndArtifacts[C, T: ClassTag](
+    fields: Seq[SodaSchemaField[C, T]], path: String = "./src/main/resources/artifacts/schema.graphql"
+  ): Schema[C, T] = {
+    val schema = makeSchema[C, T](fields: _*)
+    Artifacts.compile(schema, path)
+    schema
+  }
 }
