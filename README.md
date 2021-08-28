@@ -6,149 +6,93 @@
 
 A GraphQL Schema Tooling to make schema composing in Scala more convenient, built on Sangria.
 
-## Documentation
-
-[Docs](https://soda-tools.netlify.app)
-
 ## Setup
 
-**Latest Published Version**: `0.4.1`
+**Latest Published Version**: `0.4.2`
 
 ```sbt
 "io.github.d-exclaimation" % "soda" % latestVersion
 ```
 
-## Quick start
+## Usage/Examples
+
+- [Documentation](https://soda-tools.netlify.app)
+- [Quick start](https://soda-tools.netlify.app/docs/getting-started/setup)
+- [Schema tooling](https://soda-tools.netlify.app/docs/guides/schema)
+
+## Interoperability with Sangria
+
+Soda is built on Sangria, you can use Soda with existing Sangria schema. Even if you don't want to use the Schema tooling, you can still take advantage some features of Soda 
+
+Read more:
+
+- [Root Schema Field](https://soda-tools.netlify.app/docs/features/using-sangria-schema)
+- [SDL Artifact](https://soda-tools.netlify.app/docs/features/sdl-artifacts)
+
+### Quick Start
 
 Target SDL
 
 ```graphql
-type Picture {
-    width: Int!
-    height: Int!
-    url: String
-}
-
-interface Identifiable {
-    id: String!
-}
-
-type Product implements Identifiable {
+type User {
     id: String!
     name: String!
-    description: String
-    picture(size: Int!): Picture
 }
 
 type Query {
-    product(id: Int!): Product
-    products: [Product]
+    user(id: String!): User
+    users: [User!]!
 }
 ```
 
-### Picture Object Type
+#### User
 
 ```scala
 import io.github.dexclaimation.soda.schema._
 import sangria.schema._
 
-case class Picture(
-  width: Int,
-  height: Int,
-  url: Option[String]
+case class User(
+  id: String,
+  name: String
 )
 
-object Picture extends SodaObjectType[Unit, Picture]("Picture") {
-  override def desc = "The product picture"
-
+object User extends SodaObjectType[Unit, User]("User") {
   def definition: Def = { t =>
-    t.prop("width", IntType, of = _.width)
-    t.prop("height", IntType, of = _.height)
-    t.prop("url", OptionType(StringType), of = _.url)
-  }
-}
-```
-
-### Product Type and Identifiable Interface
-
-Identifiable trait
-
-```scala
-import io.github.dexclaimation.soda.schema._
-
-trait Identifiable {
-  def id: String
-}
-
-object Identifiable extends SodaInterfaceType[Unit, Identifiable]("Identifiable") {
-
-  override def desc = "Entity that can be identified"
-
-  def definition: Def = { t =>
-    t.id(of = _.id)
-  }
-}
-```
-
-Product type
-
-```scala
-import io.github.dexclaimation.soda.schema._
-import sangria.schema._
-
-case class Product(id: String, name: String, description: String) extends Identifiable {
-  def picture(size: Int): Picture =
-    Picture(width = size, height = size, url = Some(s"//cdn.com/$size/$id.jpg"))
-}
-
-object Product extends SodaObjectType[Unit, Product]("Product") {
-  def definition: Def = { t =>
-    t.implements(Identifiable.t)
-
     t.id(of = _.id)
     t.prop("name", StringType, of = _.name)
-    t.prop("description", StringType, of = _.description)
-
-    val s = $("size", IntType) // You can have arguments as local variable (object global / static works fine)
-    t.field("picture", Picture.t, args = s :: Nil)(c =>
-      c.value.picture(c arg s)
-    )
   }
 }
 ```
 
-### Query type
+#### Query type
 
 ```scala
 import io.github.dexclaimation.soda.schema._
 import sangria.schema._
 
-class ProductRepo {
-  private val Products = List(
-    Product("1", "Cheesecake", "Tasty"),
-    Product("2", "Health Potion", "+50 HP")
+class Repo {
+  private val Users = Map(
+    "1" -> User("1", "Bob")
   )
 
-  def product(id: String): Option[Product] =
-    Products find (_.id == id)
+  def user(id: String): Option[User] =
+    Users get id
 
-  def products: List[Product] = Products
+  def products: List[Product] = Users.values.toList
 }
 
-object ProductQuery extends SodaQuery[ProductRepo, Unit] {
+object UserQuery extends SodaQuery[Repo, Unit] {
   val id = $("id", IDType)
 
   def definition: Def = { t =>
-    t.field("product", OptionType(Product.t),
-      desc = "Returns a product with specific `id`.",
+    t.field("user", OptionType(User.t),
       args = id :: Nil
     ) { c =>
-      c.ctx.product(c.arg(id))
+      c.ctx.user(c.arg(id))
     }
 
-    t.field("products", ListType(Product.t),
-      desc = "Returns a list of all available products."
-    )(_.ctx.products)
+    t.field("users", ListType(User.t),
+    )(_.ctx.users)
   }
 }
 ```
@@ -157,20 +101,18 @@ Get the final schema
 
 ```scala
 import io.github.dexclaimation.soda.utils.SchemaDefinition.makeSchema
-import sangria.schema._
 
-val schema: Schema[ProductRepo, Unit] = makeSchema(ProductQuery.t)
+val schema = makeSchema(UserQuery.t)
 ```
+
+## Feedback
+
+If you have any feedback, please reach out to me through the issues tab or Twitter [@d_exclaimation](https://twitter.com/d_exclaimation)
 
 ## Acknowledgements
 
 This package is inspired by [Nexus](https://github.com/graphql-nexus/nexus)
 , [Slick](https://scala-slick.org/), and [Exposed](https://github.com/JetBrains/Exposed).
-
-Basically, my effort making [Sangria](https://github.com/sangria-graphql/sangria)
-schema definition similar to what's used by [Slick](https://scala-slick.org/)
-and [Exposed](https://github.com/JetBrains/Exposed) 's Table; that take advantage of implementing / extending a Trait /
-Abstract class, but have APIs more closely to [Nexus](https://github.com/graphql-nexus/nexus).
 
 <i>Icons made by <a href="" title="fjstudio">fjstudio</a> from <a href="https://www.flaticon.com/" title="Flaticon">
 flaticon</a></i>
