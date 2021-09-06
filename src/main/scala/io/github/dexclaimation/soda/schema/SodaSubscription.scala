@@ -28,7 +28,7 @@ abstract class SodaSubscription[Ctx, Val: ClassTag] {
   /**
    * SubscriptionField derivation.
    */
-  lazy val t: SubscriptionField[Ctx, Val] = {
+  lazy final val t: SubscriptionField[Ctx, Val] = {
     definition(__block)
     val fields = __block.fields.toList
     SubscriptionField(fields: _*)

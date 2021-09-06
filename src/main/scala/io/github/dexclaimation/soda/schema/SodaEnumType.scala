@@ -7,6 +7,7 @@
 
 package io.github.dexclaimation.soda.schema
 
+import sangria.ast
 import sangria.schema.{EnumType, EnumValue}
 
 /**
@@ -20,14 +21,27 @@ import sangria.schema.{EnumType, EnumValue}
  * @tparam T Value paired for this Enum (*best to implement this on a case class's companion object)
  */
 abstract class SodaEnumType[T](name: String) {
+  /** Definition with list of Enums */
+  type Def = List[EnumValue[T]]
+
   def desc: String = ""
 
-  def members: List[EnumValue[T]]
+  /** Enum Value wrapper */
+  final def enum(
+    name: String,
+    description: Option[String] = None,
+    value: T,
+    deprecationReason: Option[String] = None,
+    astDirectives: Vector[ast.Directive] = Vector.empty,
+    astNodes: Vector[ast.AstNode] = Vector.empty
+  ): EnumValue[T] = EnumValue(name, description, value, deprecationReason, astDirectives, astNodes)
+
+  def members: Def
 
   /**
    * Sangria EnumType derivation.
    */
-  lazy val t: EnumType[T] = EnumType(
+  lazy final val t: EnumType[T] = EnumType(
     name = name,
     description = if (desc.isEmpty) None else Some(desc),
     values = members

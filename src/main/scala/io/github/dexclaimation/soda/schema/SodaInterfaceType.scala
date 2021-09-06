@@ -38,7 +38,7 @@ abstract class SodaInterfaceType[Ctx, Val: ClassTag](name: String) {
   /**
    * Sangria InterfaceType derivation.
    */
-  def t: InterfaceType[Ctx, Val] = {
+  lazy final val t: InterfaceType[Ctx, Val] = {
     definition(__block)
     val fields = __block.typedefs.toList
     val interfaces = __block.interfaces.map(_.interfaceType).toList

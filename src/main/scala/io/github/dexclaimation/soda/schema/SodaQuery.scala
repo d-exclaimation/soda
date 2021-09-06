@@ -28,7 +28,7 @@ abstract class SodaQuery[Ctx, Val: ClassTag] {
   /**
    * QueryField derivation.
    */
-  lazy val t: QueryField[Ctx, Val] = {
+  lazy final val t: QueryField[Ctx, Val] = {
     definition(__block)
     val fields = __block.fields.toList
     QueryField(fields: _*)

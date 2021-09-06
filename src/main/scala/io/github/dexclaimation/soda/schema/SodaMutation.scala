@@ -28,7 +28,7 @@ abstract class SodaMutation[Ctx, Val: ClassTag] {
   /**
    * MutationField derivation.
    */
-  lazy val t: MutationField[Ctx, Val] = {
+  lazy final val t: MutationField[Ctx, Val] = {
     definition(__block)
     val fields = __block.fields.toList
     MutationField(fields: _*)

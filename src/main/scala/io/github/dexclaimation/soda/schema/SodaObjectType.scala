@@ -37,7 +37,7 @@ abstract class SodaObjectType[Ctx, Val: ClassTag](name: String) {
   /**
    * Sangria ObjectType derivation.
    */
-  lazy val t: ObjectType[Ctx, Val] = {
+  lazy final val t: ObjectType[Ctx, Val] = {
     definition(__block)
     ObjectType(
       name = name,

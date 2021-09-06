@@ -31,7 +31,7 @@ abstract class SodaScalar[Val](name: String) {
   /**
    * Sangria Scalar Type derivation
    */
-  lazy val t: ScalarType[Val] = ScalarType[Val](
+  lazy final val t: ScalarType[Val] = ScalarType[Val](
     name = name,
     description = if (desc.isEmpty) None else Some(desc),
     coerceInput = parseLiteral,
