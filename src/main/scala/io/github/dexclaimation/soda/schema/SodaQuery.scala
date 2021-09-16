@@ -18,7 +18,7 @@ import scala.reflect.ClassTag
  * @tparam Val Query Root Value.
  */
 abstract class SodaQuery[Ctx, Val: ClassTag] {
-  private val __block = new SodaRootBlock[Ctx, Val]
+  private val __block = new SodaRootBlock[Ctx, Val]()
 
   /** Definition Block */
   type Def = SodaRootBlock[Ctx, Val] => Unit

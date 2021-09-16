@@ -18,7 +18,7 @@ import scala.reflect.ClassTag
  * @tparam Val Subscription Root Value.
  */
 abstract class SodaSubscription[Ctx, Val: ClassTag] {
-  private val __block = new SodaRootBlock[Ctx, Val]
+  private val __block = new SodaRootBlock[Ctx, Val](useStreaming = true)
 
   /** Definition Block */
   type Def = SodaRootBlock[Ctx, Val] => Unit

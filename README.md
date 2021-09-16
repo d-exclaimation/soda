@@ -8,7 +8,7 @@ A GraphQL Schema Tooling to make schema composing in Scala more convenient, buil
 
 ## Setup
 
-**Latest Published Version**: `0.4.3`
+**Latest Published Version**: `0.4.4`
 
 ```sbt
 "io.github.d-exclaimation" % "soda" % latestVersion
