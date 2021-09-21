@@ -29,7 +29,10 @@ Read more:
 - [Root Schema Field](https://soda-tools.netlify.app/docs/features/using-sangria-schema)
 - [SDL Artifact](https://soda-tools.netlify.app/docs/features/sdl-artifacts)
 
-### Quick Start
+## Quick Start
+
+<details>
+<summary><b>Simple App</b></summary>
 
 Target SDL
 
@@ -104,6 +107,7 @@ import io.github.dexclaimation.soda.utils.SchemaDefinition.makeSchema
 
 val schema = makeSchema(UserQuery.t)
 ```
+</details>
 
 ## Feedback
 
