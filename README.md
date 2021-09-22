@@ -38,27 +38,34 @@ Target SDL
 
 ```graphql
 type User {
-    id: String!
-    name: String!
+  id: String!
+  name: String!
 }
 
 type Query {
-    user(id: String!): User
-    users: [User!]!
+  user(id: String!): User
+  users: [User!]!
 }
 ```
 
 #### User
 
 ```scala
-import io.github.dexclaimation.soda.schema._
+import io.github.dexclaimation.soda.derive.obj
+import io.github.dexclaimation.soda.schema.SodaObjectType
 import sangria.schema.StringType
 
 case class User(id: String, name: String)
 
-object User extends SodaObjectType[Unit, User]("User") {
+// Using macro (More abstraction & limitations, faster to write)
+object User {
+  final val t = obj[Repo, User]()
+}
+    
+// Using regular traits (Clear, easier to debug, slower to write)
+object User extends SodaObjectType[Repo, User]("User") {
   def definition: Def = { t =>
-    t.id(of = _.id)
+    t.prop("id", StringType, of = _.id)
     t.prop("name", StringType, of = _.name)
   }
 }
