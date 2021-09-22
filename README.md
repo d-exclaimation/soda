@@ -1,5 +1,5 @@
 <p align="center">
-    <img style="margin: 1rem" src="./soda.png" width="175"/>
+    <img style="margin: 1rem" src="./icon.png" width="175"/>
 </p>
 <p align="center"> <h1>Soda</h1></p>
 
