@@ -12,12 +12,10 @@ import sangria.schema.{Args, Context}
 import scala.reflect.ClassTag
 
 /**
- * Data fetching environment (Sangria's [[sangria.schema.Context]])
- *
- * Simple wrapper
+ * Data fetching environment (sangria.schema.Context)
  */
 object Dfe {
-  /** Data fetching environment (Sangria's [[sangria.schema.Context]]) */
+  /** Data fetching environment (sangria.schema.Context) */
   def unapply[Ctx, Val: ClassTag](c: Context[Ctx, Val]): Option[(Val, Args, Ctx)] =
     Some((c.value, c.args, c.ctx))
 }

@@ -2,7 +2,7 @@ scalaVersion := "2.13.3"
 
 ThisBuild / name := "soda"
 ThisBuild / organization := "io.github.d-exclaimation"
-ThisBuild / version := "0.4.4"
+ThisBuild / version := "0.4.5"
 ThisBuild / organizationHomepage := Some(url("https://www.dexclaimation.com"))
 ThisBuild / scmInfo := Some(
   ScmInfo(
@@ -42,7 +42,6 @@ ThisBuild / versionScheme := Some("early-semver")
 libraryDependencies ++= {
   val sangriaVer = "2.1.3"
   Seq(
-    "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.2",
     "org.sangria-graphql" %% "sangria" % sangriaVer
   )
 }
