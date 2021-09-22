@@ -30,7 +30,7 @@ abstract class SodaMutation[Ctx, Val: ClassTag] {
    */
   lazy final val t: MutationField[Ctx, Val] = {
     definition(__block)
-    val fields = __block.fields.toList
+    val fields = __block.typedefs.toList
     MutationField(fields: _*)
   }
 }

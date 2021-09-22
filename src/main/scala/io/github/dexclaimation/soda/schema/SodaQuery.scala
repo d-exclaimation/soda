@@ -30,7 +30,7 @@ abstract class SodaQuery[Ctx, Val: ClassTag] {
    */
   lazy final val t: QueryField[Ctx, Val] = {
     definition(__block)
-    val fields = __block.fields.toList
+    val fields = __block.typedefs.toList
     QueryField(fields: _*)
   }
 }
