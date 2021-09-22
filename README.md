@@ -32,7 +32,7 @@ Read more:
 ## Quick Start
 
 <details>
-<summary><b>Simple App</b></summary>
+<summary><b>Example Schema</b></summary>
 
 Target SDL
 
@@ -52,12 +52,9 @@ type Query {
 
 ```scala
 import io.github.dexclaimation.soda.schema._
-import sangria.schema._
+import sangria.schema.StringType
 
-case class User(
-  id: String,
-  name: String
-)
+case class User(id: String, name: String)
 
 object User extends SodaObjectType[Unit, User]("User") {
   def definition: Def = { t =>
@@ -71,12 +68,10 @@ object User extends SodaObjectType[Unit, User]("User") {
 
 ```scala
 import io.github.dexclaimation.soda.schema._
-import sangria.schema._
+import sangria.schema.{IDType, OptionType, ListType}
 
 class Repo {
-  private val Users = Map(
-    "1" -> User("1", "Bob")
-  )
+  private val Users = Map("1" -> User("1", "Bob"))
 
   def user(id: String): Option[User] =
     Users get id
@@ -88,14 +83,11 @@ object UserQuery extends SodaQuery[Repo, Unit] {
   val id = $("id", IDType)
 
   def definition: Def = { t =>
-    t.field("user", OptionType(User.t),
-      args = id :: Nil
-    ) { c =>
+    t.field("user", OptionType(User.t), args = id :: Nil) { c =>
       c.ctx.user(c.arg(id))
     }
 
-    t.field("users", ListType(User.t),
-    )(_.ctx.users)
+    t.field("users", ListType(User.t)) { _.ctx.users }
   }
 }
 ```
@@ -115,9 +107,8 @@ If you have any feedback, please reach out to me through the issues tab or Twitt
 
 ## Acknowledgements
 
-This package is inspired by [Nexus](https://github.com/graphql-nexus/nexus)
-, [Slick](https://scala-slick.org/), and [Exposed](https://github.com/JetBrains/Exposed).
+This package is inspired by [Nexus](https://github.com/graphql-nexus/nexus).
 
-<i>Icons made by <a href="" title="fjstudio">fjstudio</a> from <a href="https://www.flaticon.com/" title="Flaticon">
+<i>Icons made by <a href="https://www.flaticon.com/" title="Flaticon">
 flaticon</a></i>
 
