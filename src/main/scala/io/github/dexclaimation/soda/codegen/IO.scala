@@ -36,7 +36,4 @@ object IO {
     }
   }
 
-  def main(args: Array[String]): Unit = {
-    generateSchema("./src/main/resources/graphql/schema.graphql")
-  }
 }
