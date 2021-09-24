@@ -33,15 +33,21 @@ abstract class SodaInputType[Val](name: String) {
   /**
    * Sangria InputObjectType derivation.
    */
-  lazy final val t: InputObjectType[Val] = {
+
+  /**
+   * Sangria InputObjectType derivation.
+   */
+  lazy final val t: InputObjectType[InputObjectType.DefaultInput] = {
     definition(__block)
     val fields = __block.typedefs.toList
-    InputObjectType(
-      name = name,
-      description = if (desc.isEmpty) None else Some(desc),
-      fieldsFn = () => fields,
-      astDirectives = Vector.empty,
-      astNodes = Vector.empty
-    )
+    if (desc.isEmpty) {
+      InputObjectType(
+        name, fields
+      )
+    } else
+      InputObjectType(
+        name, desc, fields
+      )
   }
+
 }
