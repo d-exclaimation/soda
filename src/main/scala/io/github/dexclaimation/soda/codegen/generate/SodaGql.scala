@@ -1,0 +1,46 @@
+//
+//  SodaGql.scala
+//  soda
+//
+//  Created by d-exclaimation on 4:48 PM.
+//
+
+package io.github.dexclaimation.soda.codegen.generate
+
+import sangria.ast.{ListType, NamedType, NotNullType, Type}
+
+object SodaGql {
+
+  private val convert = {
+    val types = Vector("String", "Int", "Boolean", "Float", "ID")
+      .map(t => t -> s"${t}Type")
+    Map(types: _*)
+  }
+
+  def gqlToSangriaType(t: Type, isInput: Boolean = false): String = {
+    val postFix = if (isInput) "Input" else ""
+    t match {
+      case NamedType(name, _) => s"Option${postFix}Type(${convert.getOrElse(name, s"$name.t")})"
+      case NotNullType(ofType, _) => normal(ofType, isInput)
+      case ListType(ofType, _) => s"Option${postFix}Type(${list(ofType, isInput)})"
+    }
+  }
+
+  private def normal(t: Type, isInput: Boolean = false): String = {
+    t match {
+      case NamedType(name, _) => convert.getOrElse(name, s"$name.t")
+      case NotNullType(ofType, _) => gqlToSangriaType(ofType, isInput)
+      case ListType(ofType, _) => list(ofType, isInput)
+    }
+  }
+
+  private def list(t: Type, isInput: Boolean = false): String = {
+    val postFix = if (isInput) "Input" else ""
+    t match {
+      case NamedType(name, _) => s"List${postFix}Type(Option${postFix}Type(${convert.getOrElse(name, s"$name.t")}))"
+      case NotNullType(ofType, _) => s"List${postFix}Type(${normal(ofType, isInput)})"
+      case ListType(ofType, _) => s"Option${postFix}Type(${list(ofType, isInput)})"
+    }
+  }
+
+}
