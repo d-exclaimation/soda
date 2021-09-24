@@ -34,7 +34,7 @@ object Interface {
       .mkString("\n")
 
     val sodaDef =
-      s"""object ${obj.name} extends SodaObjectType[Unit, ${obj.name}](\"${obj.name}\") {
+      s"""object ${obj.name} extends SodaInterfaceType[Unit, ${obj.name}](\"${obj.name}\") {
          |  def definition: Def = { t =>
          |$sodaFields
          |  }
@@ -45,6 +45,6 @@ object Interface {
 
   private def field(f: FieldDefinition): String = {
     val typeDef = ScalaGql.gqlToScalaType(f.fieldType)
-    s"val ${f.name}: $typeDef"
+    s"def ${f.name}: $typeDef"
   }
 }

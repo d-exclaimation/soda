@@ -17,7 +17,9 @@ object Object {
       .fields
       .map(field)
       .mkString(",\n")
-    val caseClass = s"case class ${obj.name}(\n$caseFields\n)"
+    val caseClass = s"case class ${obj.name}(\n$caseFields\n) ${
+      if (obj.interfaces.nonEmpty) s"extends ${obj.interfaces.map(_.name).mkString(" with ")}" else ""
+    }"
 
     val atomic = new AtomicInteger()
 

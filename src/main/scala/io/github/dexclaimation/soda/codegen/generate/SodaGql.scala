@@ -20,7 +20,7 @@ object SodaGql {
   def gqlToSangriaType(t: Type, isInput: Boolean = false): String = {
     val postFix = if (isInput) "Input" else ""
     t match {
-      case NamedType(name, _) => s"Option${postFix}Type(${convert.getOrElse(name, s"$name.t")})"
+      case NamedType(name, _) => s"Option${postFix}Type(${nameConvention(name, isInput)})"
       case NotNullType(ofType, _) => normal(ofType, isInput)
       case ListType(ofType, _) => s"Option${postFix}Type(${list(ofType, isInput)})"
     }
@@ -28,7 +28,7 @@ object SodaGql {
 
   private def normal(t: Type, isInput: Boolean = false): String = {
     t match {
-      case NamedType(name, _) => convert.getOrElse(name, s"$name.t")
+      case NamedType(name, _) => nameConvention(name, isInput)
       case NotNullType(ofType, _) => gqlToSangriaType(ofType, isInput)
       case ListType(ofType, _) => list(ofType, isInput)
     }
@@ -37,10 +37,14 @@ object SodaGql {
   private def list(t: Type, isInput: Boolean = false): String = {
     val postFix = if (isInput) "Input" else ""
     t match {
-      case NamedType(name, _) => s"List${postFix}Type(Option${postFix}Type(${convert.getOrElse(name, s"$name.t")}))"
+      case NamedType(name, _) => s"List${postFix}Type(Option${postFix}Type(${nameConvention(name, isInput)}))"
       case NotNullType(ofType, _) => s"List${postFix}Type(${normal(ofType, isInput)})"
       case ListType(ofType, _) => s"Option${postFix}Type(${list(ofType, isInput)})"
     }
   }
 
+  private def nameConvention(name: String, isInput: Boolean = false): String = {
+    val objName = if (isInput && !name.contains("Input")) s"${name}Input.t" else s"$name.t"
+    convert.getOrElse(name, objName)
+  }
 }

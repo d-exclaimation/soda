@@ -1,0 +1,22 @@
+type Query {
+    state: Int!
+}
+
+type Mutation {
+    increment: Int!
+}
+
+interface Node {
+    id: ID!
+}
+
+type Friend implements Node {
+    id: ID!
+    name: String!
+    friend(input: FriendInput!): Node
+    friends(limit: Int!): [Node!]!
+}
+
+input FriendInput {
+    name: String!
+}

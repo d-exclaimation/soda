@@ -35,10 +35,10 @@ object Artifacts {
    *
    * @param file The file to be written.
    */
-  private def makeIfNotExist(file: File): Unit = {
+  def makeIfNotExist(file: File): Unit = {
     if (!file.exists()) {
-      println(file.getParentFile.mkdirs())
-      println(file.createNewFile())
+      file.getParentFile.mkdirs()
+      file.createNewFile()
     }
   }
 
@@ -48,7 +48,7 @@ object Artifacts {
    * @param file        the target File.
    * @param compilation The compilation result.
    */
-  private def compileFile(file: File, compilation: String): Unit = {
+  def compileFile(file: File, compilation: String): Unit = {
     val writer = new PrintWriter(file)
     writer.write(compilation)
     writer.close()

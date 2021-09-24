@@ -7,10 +7,36 @@
 
 package io.github.dexclaimation.soda.codegen
 
-import scala.util.{Success, Try}
+import io.github.dexclaimation.soda.utils.Artifacts
+
+import java.io.File
+import java.nio.file.{Files, Paths}
+import scala.util.control.NonFatal
+import scala.util.{Failure, Success, Try}
 
 object IO {
-  def read(path: String): String = ""
 
-  def write(path: String, content: String): Try[Unit] = Success(())
+  def read(path: String): String = {
+    try {
+      val schemaPath = Paths.get(path)
+      Files.readString(schemaPath)
+    } catch {
+      case NonFatal(_) => ""
+    }
+  }
+
+  def write(path: String, content: String): Try[String] = {
+    try {
+      val target = new File(path)
+      Artifacts.makeIfNotExist(target)
+      Artifacts.compileFile(target, content)
+      Success(path)
+    } catch {
+      case NonFatal(e) => Failure(e)
+    }
+  }
+
+  def main(args: Array[String]): Unit = {
+    generateSchema("./src/main/resources/graphql/schema.graphql")
+  }
 }
