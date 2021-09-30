@@ -17,7 +17,9 @@ object SodaGql {
     Map(types: _*)
   }
 
-  def gqlToSangriaType(t: Type, isInput: Boolean = false): String = {
+  def certainType(t: NamedType): String = nameConvention(t.name)
+
+  def fromGql(t: Type, isInput: Boolean = false): String = {
     val postFix = if (isInput) "Input" else ""
     t match {
       case NamedType(name, _) => s"Option${postFix}Type(${nameConvention(name, isInput)})"
@@ -29,7 +31,7 @@ object SodaGql {
   private def normal(t: Type, isInput: Boolean = false): String = {
     t match {
       case NamedType(name, _) => nameConvention(name, isInput)
-      case NotNullType(ofType, _) => gqlToSangriaType(ofType, isInput)
+      case NotNullType(ofType, _) => fromGql(ofType, isInput)
       case ListType(ofType, _) => list(ofType, isInput)
     }
   }

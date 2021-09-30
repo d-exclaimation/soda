@@ -7,6 +7,7 @@
 
 package io.github.dexclaimation.soda.codegen.generate
 
+import io.github.dexclaimation.soda.codegen.generate.Common.PACKAGE_INIT
 import io.github.dexclaimation.soda.codegen.generate.Object.sodaProp
 import sangria.ast.{FieldDefinition, InterfaceTypeDefinition}
 
@@ -33,18 +34,19 @@ object Interface {
       .map(sodaProp(atomic))
       .mkString("\n")
 
-    val sodaDef =
-      s"""object ${obj.name} extends SodaInterfaceType[Unit, ${obj.name}](\"${obj.name}\") {
-         |  def definition: Def = { t =>
-         |$sodaFields
-         |  }
-         |}
-         |""".stripMargin
-    s"package schema\n\nimport io.github.dexclaimation.soda.schema._\nimport sangria.schema._\n\n$traitDef\n\n$sodaDef"
+    s"""
+       |$PACKAGE_INIT$traitDef
+       |
+       |object ${obj.name} extends SodaInterfaceType[Unit, ${obj.name}](\"${obj.name}\") {
+       |  def definition: Def = { t =>
+       |$sodaFields
+       |  }
+       |}
+       |""".stripMargin
   }
 
   private def field(f: FieldDefinition): String = {
-    val typeDef = ScalaGql.gqlToScalaType(f.fieldType)
+    val typeDef = ScalaGql.fromGql(f.fieldType)
     s"def ${f.name}: $typeDef"
   }
 }

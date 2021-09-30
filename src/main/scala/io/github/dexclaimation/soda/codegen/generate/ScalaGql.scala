@@ -18,7 +18,7 @@ object ScalaGql {
     Map(types: _*)
   }
 
-  def gqlToScalaType(t: Type): String = {
+  def fromGql(t: Type): String = {
     t match {
       case NamedType(name, _) => s"Option[${convert.getOrElse(name, name)}]"
       case NotNullType(ofType, _) => normal(ofType)
@@ -29,7 +29,7 @@ object ScalaGql {
   private def normal(t: Type): String = {
     t match {
       case NamedType(name, _) => convert.getOrElse(name, name)
-      case NotNullType(ofType, _) => gqlToScalaType(ofType)
+      case NotNullType(ofType, _) => fromGql(ofType)
       case ListType(ofType, _) => list(ofType)
     }
   }

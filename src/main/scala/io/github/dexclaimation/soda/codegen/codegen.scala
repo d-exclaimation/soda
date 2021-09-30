@@ -42,15 +42,18 @@ package object codegen {
         case _ => None
       }
       .flatMap {
-        case obj: ObjectTypeDefinition if (!Set("Query", "Mutation", "Subscription").contains(obj.name)) =>
+        case obj: ObjectTypeDefinition if !Set("Query", "Mutation", "Subscription").contains(obj.name) =>
           Some((obj.name, generate.Object(obj)))
-        case interface: InterfaceTypeDefinition => Some((interface.name, generate.Interface(interface)))
-        case input: InputObjectTypeDefinition => Some(
-          (if (input.name.contains("Input")) input.name else s"${input.name}Input", generate.Input(input))
-        )
-        case _: ScalarTypeDefinition => None
-        case _: UnionTypeDefinition => None
-        case _: EnumTypeDefinition => None
+        case itf: InterfaceTypeDefinition =>
+          Some((itf.name, generate.Interface(itf)))
+        case ipt: InputObjectTypeDefinition =>
+          Some((generate.Input.inputName(ipt), generate.Input(ipt)))
+        case uni: UnionTypeDefinition =>
+          Some((uni.name, generate.Union(uni)))
+        case enum: EnumTypeDefinition =>
+          Some((enum.name, generate.Enum(enum)))
+        case s: ScalarTypeDefinition =>
+          Some((s.name, generate.Scalar(s)))
         case _ => None
       }
       .map { case (filename, content) => (s"$filepath/$filename.scala", content) }

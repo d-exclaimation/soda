@@ -7,6 +7,7 @@
 
 package io.github.dexclaimation.soda.codegen.generate
 
+import io.github.dexclaimation.soda.codegen.generate.Common.PACKAGE_INIT
 import sangria.ast.{FieldDefinition, ObjectTypeDefinition}
 
 import java.util.concurrent.atomic.AtomicInteger
@@ -32,24 +33,26 @@ object Object {
       .map(sodaProp(atomic))
       .mkString("\n")
 
-    val sodaDef =
-      s"""object ${obj.name} extends SodaObjectType[Unit, ${obj.name}](\"${obj.name}\") {
-         |  def definition: Def = { t =>
-         |$interfaces$sodaFields
-         |  }
-         |}
-         |""".stripMargin
-    s"package schema\n\nimport io.github.dexclaimation.soda.schema._\nimport sangria.schema._\n\n$caseClass\n\n$sodaDef"
+    s"""
+       |$PACKAGE_INIT$caseClass
+       |
+       |
+       |object ${obj.name} extends SodaObjectType[Unit, ${obj.name}](\"${obj.name}\") {
+       |  def definition: Def = { t =>
+       |$interfaces$sodaFields
+       |  }
+       |}
+       |""".stripMargin
   }
 
   private def field(f: FieldDefinition): String = {
-    val typeName = ScalaGql.gqlToScalaType(f.fieldType)
+    val typeName = ScalaGql.fromGql(f.fieldType)
     s"  ${f.name}: $typeName"
   }
 
 
   def sodaProp(atomic: AtomicInteger): FieldDefinition => String = f => {
-    val typeDef = SodaGql.gqlToSangriaType(f.fieldType)
+    val typeDef = SodaGql.fromGql(f.fieldType)
     if (f.arguments.isEmpty) {
       s"""    t.prop("${f.name}", $typeDef, of = _.${f.name})"""
     } else {
@@ -58,7 +61,7 @@ object Object {
       atomic.getAndIncrement()
       val argVars = args
         .map { case (name, a) => s"""val $name = ${"$"}("${a.name}", ${
-          SodaGql.gqlToSangriaType(a.valueType, isInput = true
+          SodaGql.fromGql(a.valueType, isInput = true
           )
         })"""
         }
