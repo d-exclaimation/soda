@@ -10,9 +10,10 @@ package io.github.dexclaimation.soda.codegen.generate
 import sangria.ast.ScalarTypeDefinition
 
 object Scalar {
-  def apply(s: ScalarTypeDefinition): String = {
+  /** Make the compilation for the ScalarType */
+  def apply(s: ScalarTypeDefinition, pkg: String): String = {
     val PACKAGE_INIT =
-      s"""
+      s"""package $pkg
          |import io.github.dexclaimation.soda.schema._
          |import sangria.ast
          |import sangria.validation.ValueCoercionViolation
@@ -20,7 +21,6 @@ object Scalar {
 
     s"""
        |$PACKAGE_INIT
-       |
        |object ${s.name} extends SodaScalar[Any]("${s.name}") {
        |  case object ${s.name}Violation extends ValueCoercionViolation("Not implemented yet")
        |

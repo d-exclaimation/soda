@@ -7,13 +7,14 @@
 
 package io.github.dexclaimation.soda.codegen.generate
 
-import io.github.dexclaimation.soda.codegen.generate.Common.PACKAGE_INIT
+import io.github.dexclaimation.soda.codegen.generate.Common.{indent, pkgInit}
 import sangria.ast.{FieldDefinition, ObjectTypeDefinition}
 
 import java.util.concurrent.atomic.AtomicInteger
 
 object Object {
-  def apply(obj: ObjectTypeDefinition): String = {
+  /** Make the compilation for the ObjectType */
+  def apply(obj: ObjectTypeDefinition, pkg: String): String = {
     val caseFields = obj
       .fields
       .map(field)
@@ -25,7 +26,7 @@ object Object {
     val atomic = new AtomicInteger()
 
     val interfaces = if (obj.interfaces.nonEmpty)
-      s"    t.implements(${obj.interfaces.map(_.name + ".t").mkString(", ")})\n\n"
+      s"t.implements(${obj.interfaces.map(_.name + ".t").mkString(", ")})"
     else ""
 
     val sodaFields = obj
@@ -34,12 +35,13 @@ object Object {
       .mkString("\n")
 
     s"""
-       |$PACKAGE_INIT$caseClass
-       |
+       |${pkgInit(pkg)}$caseClass
        |
        |object ${obj.name} extends SodaObjectType[Unit, ${obj.name}](\"${obj.name}\") {
        |  def definition: Def = { t =>
-       |$interfaces$sodaFields
+       |    $interfaces
+       |
+       |$sodaFields
        |  }
        |}
        |""".stripMargin
@@ -47,28 +49,37 @@ object Object {
 
   private def field(f: FieldDefinition): String = {
     val typeName = ScalaGql.fromGql(f.fieldType)
-    s"  ${f.name}: $typeName"
+    indent() {
+      s"${f.name}: $typeName"
+    }
   }
 
 
   def sodaProp(atomic: AtomicInteger): FieldDefinition => String = f => {
     val typeDef = SodaGql.fromGql(f.fieldType)
     if (f.arguments.isEmpty) {
-      s"""    t.prop("${f.name}", $typeDef, of = _.${f.name})"""
+      indent(2) {
+        s"""t.prop("${f.name}", $typeDef, of = _.${f.name})"""
+      }
     } else {
+
       val args = f.arguments
         .map(a => (a.name + s"${if (atomic.get() == 0) "" else atomic.get().toString}Arg", a))
       atomic.getAndIncrement()
       val argVars = args
-        .map { case (name, a) => s"""val $name = ${"$"}("${a.name}", ${
-          SodaGql.fromGql(a.valueType, isInput = true
-          )
-        })"""
+        .map { case (name, a) =>
+          s"""val $name = ${"$"}("${a.name}", ${SodaGql.fromGql(a.valueType, isInput = true)})"""
         }
-        .map("    " + _)
+        .map(s => indent(2)(s))
         .mkString("\n")
+
       val argsDeclare = s", args = ${args.map(_._1).mkString(" :: ")} :: Nil"
-      s"""\n$argVars\n    t.field("${f.name}", $typeDef$argsDeclare) { c => c.value.${f.name} }"""
+
+      s"\n$argVars\n${
+        indent(2) {
+          s"""t.field("${f.name}", $typeDef$argsDeclare) { c => c.value.${f.name} }"""
+        }
+      }"
     }
   }
 }

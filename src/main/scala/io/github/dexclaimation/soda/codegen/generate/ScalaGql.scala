@@ -18,6 +18,12 @@ object ScalaGql {
     Map(types: _*)
   }
 
+  /**
+   * Return the proper type from GraphQL SDL Type
+   *
+   * @param t GraphQL DSL Type.
+   * @return Scala type in string.
+   */
   def fromGql(t: Type): String = {
     t match {
       case NamedType(name, _) => s"Option[${convert.getOrElse(name, name)}]"

@@ -7,18 +7,19 @@
 
 package io.github.dexclaimation.soda.codegen.generate
 
-import io.github.dexclaimation.soda.codegen.generate.Common.PACKAGE_INIT
+import io.github.dexclaimation.soda.codegen.generate.Common.{indent, pkgInit}
 import io.github.dexclaimation.soda.codegen.generate.Object.sodaProp
 import sangria.ast.{FieldDefinition, InterfaceTypeDefinition}
 
 import java.util.concurrent.atomic.AtomicInteger
 
 object Interface {
-  def apply(obj: InterfaceTypeDefinition): String = {
+  /** Make the compilation for the InterfaceType */
+  def apply(obj: InterfaceTypeDefinition, pkg: String): String = {
     val traitFields = obj
       .fields
       .map(field)
-      .map("  " + _)
+      .map(s => indent()(s))
       .mkString("\n")
 
     val traitDef =
@@ -35,7 +36,7 @@ object Interface {
       .mkString("\n")
 
     s"""
-       |$PACKAGE_INIT$traitDef
+       |${pkgInit(pkg)}$traitDef
        |
        |object ${obj.name} extends SodaInterfaceType[Unit, ${obj.name}](\"${obj.name}\") {
        |  def definition: Def = { t =>

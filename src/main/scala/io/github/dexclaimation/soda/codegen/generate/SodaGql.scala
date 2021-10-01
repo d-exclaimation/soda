@@ -17,8 +17,21 @@ object SodaGql {
     Map(types: _*)
   }
 
+  /**
+   * Return the Sangria type (certain, no option).
+   *
+   * @param t Named type.
+   * @return Sangria type in String.
+   */
   def certainType(t: NamedType): String = nameConvention(t.name)
 
+  /**
+   * Return the Sangria type.
+   *
+   * @param t       GraphQL SDL Type.
+   * @param isInput Is input type?
+   * @return Sangria type in String.
+   */
   def fromGql(t: Type, isInput: Boolean = false): String = {
     val postFix = if (isInput) "Input" else ""
     t match {

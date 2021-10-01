@@ -7,15 +7,16 @@
 
 package io.github.dexclaimation.soda.codegen.generate
 
-import io.github.dexclaimation.soda.codegen.generate.Common.PACKAGE_INIT
+import io.github.dexclaimation.soda.codegen.generate.Common.{indent, pkgInit}
 import sangria.ast.{EnumTypeDefinition, EnumValueDefinition}
 
 object Enum {
-  def apply(e: EnumTypeDefinition): String = {
+  /** Make the compilation for the EnumType */
+  def apply(e: EnumTypeDefinition, pkg: String): String = {
     val objects = e
       .values
       .map(enumValue)
-      .map(name => s"  case object $name extends ${e.name}\n")
+      .map(name => indent()(s"case object $name extends ${e.name}\n"))
       .mkString
 
     val members = e
@@ -25,7 +26,7 @@ object Enum {
       .map(_ + " :: ")
       .mkString
     s"""
-       |${PACKAGE_INIT}sealed trait ${e.name}
+       |${pkgInit(pkg)}sealed trait ${e.name}
        |
        |object ${e.name} extends SodaEnumType[${e.name}]("${e.name}") {
        |$objects

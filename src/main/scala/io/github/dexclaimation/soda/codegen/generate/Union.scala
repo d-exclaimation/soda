@@ -7,14 +7,16 @@
 
 package io.github.dexclaimation.soda.codegen.generate
 
-import io.github.dexclaimation.soda.codegen.generate.Common.PACKAGE_INIT
+import io.github.dexclaimation.soda.codegen.generate.Common.pkgInit
 import sangria.ast.UnionTypeDefinition
 
 object Union {
-  def apply(uni: UnionTypeDefinition): String = {
+
+  /** Make the compilation for the UnionType */
+  def apply(uni: UnionTypeDefinition, pkg: String): String = {
     val members = uni.types.map(SodaGql.certainType).mkString(", ")
     s"""
-       |${PACKAGE_INIT}object ${uni.name} extends SodaUnionType[Unit]("${uni.name}") {
+       |${pkgInit(pkg)}object ${uni.name} extends SodaUnionType[Unit]("${uni.name}") {
        |  def definition: Def = { t =>
        |    t.members($members)
        |  }
