@@ -7,6 +7,7 @@
 
 package io.github.dexclaimation.soda.utils
 
+import io.github.dexclaimation.soda.common.Artifacts
 import io.github.dexclaimation.soda.utils.MutationField.makeMutation
 import io.github.dexclaimation.soda.utils.QueryField.makeQuery
 import io.github.dexclaimation.soda.utils.SubscriptionField.makeSubscription
