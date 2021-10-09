@@ -7,7 +7,8 @@
 
 package io.github.dexclaimation.soda.schema
 
-import io.github.dexclaimation.soda.utils.QueryField
+import io.github.dexclaimation.soda.schema.defs.SodaRootBlock
+import io.github.dexclaimation.soda.core.QueryField
 
 import scala.reflect.ClassTag
 
@@ -30,7 +31,7 @@ abstract class SodaQuery[Ctx, Val: ClassTag] {
    */
   lazy final val t: QueryField[Ctx, Val] = {
     definition(__block)
-    val fields = __block.typedefs.toList
+    val fields = __block.typedefs.map(_.apply()).toList
     QueryField(fields: _*)
   }
 }

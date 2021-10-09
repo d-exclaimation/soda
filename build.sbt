@@ -1,6 +1,6 @@
 scalaVersion := "2.13.3"
 
-ThisBuild / name := "soda"
+name := "soda"
 ThisBuild / organization := "io.github.d-exclaimation"
 ThisBuild / version := "0.5.0"
 ThisBuild / organizationHomepage := Some(url("https://www.dexclaimation.com"))
@@ -20,13 +20,10 @@ ThisBuild / developers := List(
   )
 )
 
-crossPaths := false
-
 ThisBuild / description := "Enchant your experience of GraphQL with some soda"
 ThisBuild / licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))
 ThisBuild / homepage := Some(url("https://github.com/d-exclaimation/soda"))
 
-// Remove all additional repository other than Maven Central from POM
 ThisBuild / pomIncludeRepository := { _ => false }
 
 ThisBuild / publishTo := {
@@ -42,6 +39,7 @@ ThisBuild / versionScheme := Some("early-semver")
 libraryDependencies ++= {
   val sangriaVer = "2.1.3"
   Seq(
-    "org.sangria-graphql" %% "sangria" % sangriaVer
+    "org.sangria-graphql" %% "sangria" % sangriaVer,
+    "org.scalatest" %% "scalatest" % "3.2.9" % Test,
   )
 }

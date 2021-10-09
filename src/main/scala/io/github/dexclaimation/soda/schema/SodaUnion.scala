@@ -7,6 +7,7 @@
 
 package io.github.dexclaimation.soda.schema
 
+import io.github.dexclaimation.soda.schema.defs.SodaUnionBlock
 import sangria.schema.UnionType
 
 /**
@@ -19,7 +20,7 @@ import sangria.schema.UnionType
  * @param name Name of the Union.
  * @tparam Ctx Context value for all of the members.
  */
-abstract class SodaUnionType[Ctx](name: String) {
+abstract class SodaUnion[Ctx](name: String) {
   def desc: String = ""
 
   type Def = SodaUnionBlock[Ctx] => Unit

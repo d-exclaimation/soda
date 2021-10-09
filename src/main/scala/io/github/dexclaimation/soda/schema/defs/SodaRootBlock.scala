@@ -5,9 +5,9 @@
 //  Created by d-exclaimation on 10:22 PM.
 //
 
-package io.github.dexclaimation.soda.schema
+package io.github.dexclaimation.soda.schema.defs
 
-import io.github.dexclaimation.soda.schema.traits.SodaBlock
+import io.github.dexclaimation.soda.schema.defs.traits.SodaBlock
 import sangria.execution.FieldTag
 import sangria.schema.{Action, Argument, Context, Field, OutputType}
 import sangria.streaming.SubscriptionStreamLike
@@ -42,7 +42,7 @@ class SodaRootBlock[Ctx, Val: ClassTag](useStreaming: Boolean = false) extends S
         tags = tags,
         resolve = resolve
       )
-      typedefs.addOne(streamingField)
+      typedefs.addOne(() => streamingField)
     }
   }
 }

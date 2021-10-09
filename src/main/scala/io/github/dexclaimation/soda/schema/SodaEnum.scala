@@ -20,7 +20,7 @@ import sangria.schema.{EnumType, EnumValue}
  * @param name Name of the Enum.
  * @tparam T Value paired for this Enum (*best to implement this on a case class's companion object)
  */
-abstract class SodaEnumType[T](name: String) {
+abstract class SodaEnum[T](name: String) {
   /** Definition with list of Enums */
   type Def = List[EnumValue[T]]
 

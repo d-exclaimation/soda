@@ -7,7 +7,8 @@
 
 package io.github.dexclaimation.soda.schema
 
-import io.github.dexclaimation.soda.utils.SubscriptionField
+import io.github.dexclaimation.soda.schema.defs.SodaRootBlock
+import io.github.dexclaimation.soda.core.SubscriptionField
 
 import scala.reflect.ClassTag
 
@@ -30,7 +31,7 @@ abstract class SodaSubscription[Ctx, Val: ClassTag] {
    */
   lazy final val t: SubscriptionField[Ctx, Val] = {
     definition(__block)
-    val fields = __block.typedefs.toList
+    val fields = __block.typedefs.map(_.apply()).toList
     SubscriptionField(fields: _*)
   }
 }

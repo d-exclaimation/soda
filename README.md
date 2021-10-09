@@ -1,5 +1,5 @@
 <p align="center">
-    <img style="margin: 1rem" src="./icon.png" width="175"/>
+    <img style="margin: 1rem" src="https://github.com/d-exclaimation/soda/blob/main/icon.png" width="175"/>
 </p>
 <p align="center"> <h1>Soda</h1></p>
 
@@ -11,7 +11,7 @@ A GraphQL Schema Tooling to make schema composing in Scala more convenient, buil
 **Latest Published Version**: `0.5.0`
 
 ```sbt
-"io.github.d-exclaimation" % "soda" % latestVersion
+"io.github.d-exclaimation" %% "soda" % latestVersion
 ```
 
 ## Usage/Examples
@@ -22,7 +22,8 @@ A GraphQL Schema Tooling to make schema composing in Scala more convenient, buil
 
 ## Interoperability with Sangria
 
-Soda is built on Sangria, you can use Soda with existing Sangria schema. Even if you don't want to use the Schema tooling, you can still take advantage some features of Soda 
+Soda is built on Sangria, you can use Soda with existing Sangria schema. Even if you don't want to use the Schema
+tooling, you can still take advantage some features of Soda
 
 Read more:
 
@@ -38,13 +39,13 @@ Target SDL
 
 ```graphql
 type User {
-  id: String!
-  name: String!
+    id: String!
+    name: String!
 }
 
 type Query {
-  user(id: String!): User
-  users: [User!]!
+    user(id: String!): User
+    users: [User!]!
 }
 ```
 
@@ -52,7 +53,7 @@ type Query {
 
 ```scala
 import io.github.dexclaimation.soda.derive.obj
-import io.github.dexclaimation.soda.schema.SodaObjectType
+import io.github.dexclaimation.soda.schema.SodaObject
 import sangria.schema.StringType
 
 case class User(id: String, name: String)
@@ -61,9 +62,9 @@ case class User(id: String, name: String)
 object User {
   final val t = obj[Repo, User]()
 }
-    
+
 // Using regular traits (Clear, easier to debug, slower to write)
-object User extends SodaObjectType[Repo, User]("User") {
+object User extends SodaObject[Repo, User]("User") {
   def definition: Def = { t =>
     t.prop("id", StringType, of = _.id)
     t.prop("name", StringType, of = _.name)
@@ -94,7 +95,9 @@ object UserQuery extends SodaQuery[Repo, Unit] {
       c.ctx.user(c.arg(id))
     }
 
-    t.field("users", ListType(User.t)) { _.ctx.users }
+    t.field("users", ListType(User.t)) {
+      _.ctx.users
+    }
   }
 }
 ```
@@ -102,15 +105,17 @@ object UserQuery extends SodaQuery[Repo, Unit] {
 Get the final schema
 
 ```scala
-import io.github.dexclaimation.soda.utils.SchemaDefinition.makeSchema
+import io.github.dexclaimation.soda.core.SchemaDefinition.makeSchema
 
 val schema = makeSchema(UserQuery.t)
 ```
+
 </details>
 
 ## Feedback
 
-If you have any feedback, please reach out to me through the issues tab or Twitter [@d_exclaimation](https://twitter.com/d_exclaimation)
+If you have any feedback, please reach out to me through the issues tab or
+Twitter [@d_exclaimation](https://twitter.com/d_exclaimation)
 
 ## Acknowledgements
 

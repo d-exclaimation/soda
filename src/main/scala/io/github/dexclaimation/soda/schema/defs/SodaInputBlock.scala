@@ -5,7 +5,7 @@
 //  Created by d-exclaimation on 4:06 PM.
 //
 
-package io.github.dexclaimation.soda.schema
+package io.github.dexclaimation.soda.schema.defs
 
 import sangria.marshalling.ToInput
 import sangria.schema.{IDType, InputField, InputType, WithoutInputTypeTags}

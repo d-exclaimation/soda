@@ -7,6 +7,7 @@
 
 package io.github.dexclaimation.soda.schema
 
+import io.github.dexclaimation.soda.schema.defs.SodaInputBlock
 import sangria.schema.InputObjectType
 
 /**
@@ -19,7 +20,7 @@ import sangria.schema.InputObjectType
  * @param name Name of the Input Object.
  * @tparam Val Value paired for this Object (*best to implement this on a case class's companion object)
  */
-abstract class SodaInputType[Val](name: String) {
+abstract class SodaInput[Val](name: String) {
 
   /** Definition Block */
   type Def = SodaInputBlock[Val] => Unit

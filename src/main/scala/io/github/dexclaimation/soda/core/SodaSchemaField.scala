@@ -6,7 +6,7 @@
 //
 
 
-package io.github.dexclaimation.soda.utils
+package io.github.dexclaimation.soda.core
 
 /**
  * Soda Root Schema Field

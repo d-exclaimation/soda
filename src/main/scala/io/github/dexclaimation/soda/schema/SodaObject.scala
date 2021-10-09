@@ -7,6 +7,7 @@
 
 package io.github.dexclaimation.soda.schema
 
+import io.github.dexclaimation.soda.schema.defs.SodaDefinitionBlock
 import sangria.schema.ObjectType
 import sangria.schema.ObjectType.defaultInstanceCheck
 
@@ -23,7 +24,7 @@ import scala.reflect.ClassTag
  * @tparam Ctx Context type for this Object.
  * @tparam Val Value paired for this Object (*best to implement this on a case class's companion object)
  */
-abstract class SodaObjectType[Ctx, Val: ClassTag](name: String) {
+abstract class SodaObject[Ctx, Val: ClassTag](name: String) {
 
   /** Definition block */
   type Def = SodaDefinitionBlock[Ctx, Val] => Unit
@@ -42,7 +43,7 @@ abstract class SodaObjectType[Ctx, Val: ClassTag](name: String) {
     ObjectType(
       name = name,
       description = if (desc.isEmpty) None else Some(desc),
-      fieldsFn = () => __block.typedefs.toList,
+      fieldsFn = () => __block.typedefs.map(_.apply()).toList,
       interfaces = __block.interfaces.map(_.interfaceType).toList,
       instanceCheck = defaultInstanceCheck,
       astDirectives = Vector.empty,

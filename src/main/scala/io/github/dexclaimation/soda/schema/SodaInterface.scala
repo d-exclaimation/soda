@@ -8,6 +8,7 @@
 
 package io.github.dexclaimation.soda.schema
 
+import io.github.dexclaimation.soda.schema.defs.SodaDefinitionBlock
 import sangria.schema.InterfaceType
 import sangria.schema.InterfaceType.emptyPossibleTypes
 
@@ -24,7 +25,7 @@ import scala.reflect.ClassTag
  * @tparam Ctx Context type for this Interface.
  * @tparam Val Value paired for this Interface (*best to implement this on a case class's companion object)
  */
-abstract class SodaInterfaceType[Ctx, Val: ClassTag](name: String) {
+abstract class SodaInterface[Ctx, Val: ClassTag](name: String) {
 
   /** Definition Block */
   type Def = SodaDefinitionBlock[Ctx, Val] => Unit
@@ -40,12 +41,11 @@ abstract class SodaInterfaceType[Ctx, Val: ClassTag](name: String) {
    */
   lazy final val t: InterfaceType[Ctx, Val] = {
     definition(__block)
-    val fields = __block.typedefs.toList
     val interfaces = __block.interfaces.map(_.interfaceType).toList
     InterfaceType(
       name = name,
       description = Some(desc),
-      fieldsFn = () => fields,
+      fieldsFn = () => __block.typedefs.map(_.apply()).toList,
       interfaces = interfaces,
       manualPossibleTypes = emptyPossibleTypes,
       astDirectives = Vector.empty,

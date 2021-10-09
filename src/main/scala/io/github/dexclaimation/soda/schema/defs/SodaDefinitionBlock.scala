@@ -6,9 +6,9 @@
 //
 
 
-package io.github.dexclaimation.soda.schema
+package io.github.dexclaimation.soda.schema.defs
 
-import io.github.dexclaimation.soda.schema.traits.SodaBlock
+import io.github.dexclaimation.soda.schema.defs.traits.SodaBlock
 import sangria.schema.PossibleInterface
 
 import scala.collection.mutable

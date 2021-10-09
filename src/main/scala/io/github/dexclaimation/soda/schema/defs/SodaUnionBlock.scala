@@ -5,7 +5,7 @@
 //  Created by d-exclaimation on 3:33 PM.
 //
 
-package io.github.dexclaimation.soda.schema
+package io.github.dexclaimation.soda.schema.defs
 
 import sangria.schema.ObjectType
 

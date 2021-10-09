@@ -4,6 +4,10 @@
 
 - Added `generateFrom` and `generateSchema` code generator function.
 - Moved File system related to `common` package.
+- Moved `QueryField`, `MutationField`, etc to `core`.
+- Fixed field resolver in all definitions blocks to support lazy / recursive fields.
+- Added capabilities for `lazyField` and `lazyProp` for recursive type possibilities.
+- Published with scala compiler.
 
 ## v0.4
 

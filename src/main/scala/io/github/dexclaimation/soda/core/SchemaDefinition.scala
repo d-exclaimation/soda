@@ -5,12 +5,12 @@
 //  Created by d-exclaimation on 3:35 PM.
 //
 
-package io.github.dexclaimation.soda.utils
+package io.github.dexclaimation.soda.core
 
 import io.github.dexclaimation.soda.common.Artifacts
-import io.github.dexclaimation.soda.utils.MutationField.makeMutation
-import io.github.dexclaimation.soda.utils.QueryField.makeQuery
-import io.github.dexclaimation.soda.utils.SubscriptionField.makeSubscription
+import io.github.dexclaimation.soda.core.MutationField.makeMutation
+import io.github.dexclaimation.soda.core.QueryField.makeQuery
+import io.github.dexclaimation.soda.core.SubscriptionField.makeSubscription
 import sangria.schema.Schema
 
 import scala.reflect.ClassTag

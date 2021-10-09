@@ -6,7 +6,7 @@
 //
 
 
-package io.github.dexclaimation.soda.utils
+package io.github.dexclaimation.soda.core
 
 import sangria.schema.{Field, ObjectType}
 
