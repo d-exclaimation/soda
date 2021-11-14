@@ -37,7 +37,7 @@ ThisBuild / publishMavenStyle := true
 ThisBuild / versionScheme := Some("early-semver")
 
 libraryDependencies ++= {
-  val sangriaVer = "2.1.3"
+  val sangriaVer = "2.1.5"
   Seq(
     "org.sangria-graphql" %% "sangria" % sangriaVer,
     "org.scalatest" %% "scalatest" % "3.2.9" % Test,
